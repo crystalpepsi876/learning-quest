@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learning Quest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0F0A2E">
+  <meta name="description" content="Math & Spelling practice for grades 2-5 with adaptive difficulty">
+  <title>Learning Quest</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0F0A2E;
+      --bg-mid: #1A1145;
+      --accent-teal: #4ECDC4;
+      --accent-green: #06D6A0;
+      --accent-yellow: #FFE66D;
+      --accent-orange: #F97316;
+      --accent-red: #FF6B6B;
+      --accent-purple: #A78BFA;
+      --accent-violet: #7C3AED;
+      --text-primary: #ffffff;
+      --text-muted: rgba(255,255,255,0.6);
+      --text-dim: rgba(255,255,255,0.35);
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      background: linear-gradient(145deg, var(--bg-deep) 0%, var(--bg-mid) 35%, #0D1B3E 70%, #071428 100%);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+      padding-top: env(safe-area-inset-top, 16px);
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    #app {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn {
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.96) !important; }
+
+    .btn-back {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* ---- HOME SCREEN ---- */
+    .screen { display: none; animation: fadeIn 0.35s ease; }
+    .screen.active { display: block; }
+
+    .title-block { text-align: center; margin: 24px 0 36px; }
+    .main-title {
+      font-size: clamp(36px, 10vw, 52px);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange), var(--accent-red), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+    .subtitle { font-size: 16px; color: var(--text-muted); margin-top: 8px; font-weight: 600; }
+
+    .subject-grid { display: flex; flex-direction: column; gap: 16px; }
+
+    .subject-card {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 28px 20px; border-radius: 22px; color: #fff; width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .subject-card.math {
+      background: linear-gradient(135deg, #1e3a5f, #2d5a87, #1e3a5f);
+      border: 1px solid rgba(78, 205, 196, 0.3);
+    }
+    .subject-card.spelling {
+      background: linear-gradient(135deg, #3b1f5e, #5b2d8e, #3b1f5e);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+    }
+    .subject-icon { font-size: 44px; }
+    .subject-label { font-size: 24px; font-weight: 800; }
+    .subject-desc { font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+    /* ---- GRADE SELECT ---- */
+    .grade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grade-card {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 32px 16px; border-radius: 20px; color: #fff; width: 100%;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    }
+    .grade-card.g2 { background: linear-gradient(135deg, #FF6B6B, #EE5A24); }
+    .grade-card.g3 { background: linear-gradient(135deg, #4ECDC4, #0ABDE3); }
+    .grade-card.g4 { background: linear-gradient(135deg, #A78BFA, #7C3AED); }
+    .grade-card.g5 { background: linear-gradient(135deg, #F97316, #F59E0B); }
+    .grade-number { font-size: 22px; font-weight: 800; }
+    .grade-age { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 500; }
+
+    /* ---- PLAY SCREEN ---- */
+    .play-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+    }
+    .stats-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .stat-badge {
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 12px; padding: 5px 12px; min-width: 56px;
+    }
+    .stat-label {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
+      color: rgba(255,255,255,0.45); font-weight: 700;
+    }
+    .stat-value { font-size: 17px; font-weight: 800; color: var(--accent-yellow); }
+
+    .progress-section { margin-bottom: 20px; }
+    .progress-label {
+      font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 5px;
+      font-weight: 600; text-align: center;
+    }
+    .progress-track {
+      position: relative; height: 10px;
+      background: rgba(255,255,255,0.08); border-radius: 10px; overflow: visible;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 10px; transition: width 0.5s ease;
+      background: linear-gradient(90deg, var(--accent-teal), var(--accent-green), var(--accent-yellow));
+    }
+    .progress-dot {
+      position: absolute; top: 50%; width: 13px; height: 13px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.35); transition: all 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+    .progress-dot.filled {
+      background: var(--accent-yellow) !important; transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    .problem-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 24px; padding: 32px 22px 24px; text-align: center;
+      backdrop-filter: blur(10px); box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .problem-type {
+      font-size: 13px; color: rgba(255,255,255,0.45); text-transform: uppercase;
+      letter-spacing: 1.5px; font-weight: 700; margin-bottom: 18px;
+    }
+    .math-expression {
+      font-size: clamp(32px, 9vw, 44px); font-weight: 900; color: #fff; letter-spacing: 2px;
+      display: block; margin-bottom: 24px;
+    }
+    .spelling-area {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .btn-speak {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-violet));
+      padding: 16px 32px; font-size: 18px; color: #fff;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    }
+    .hint-text {
+      font-size: 15px; color: var(--text-muted);
+      font-family: 'Courier New', monospace; letter-spacing: 3px;
+    }
+
+    .input-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .answer-input {
+      flex: 1; padding: 14px 16px; border-radius: 14px;
+      border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06);
+      color: #fff; font-size: 20px; font-weight: 700; font-family: inherit;
+      outline: none; text-align: center; transition: border-color 0.2s;
+      min-width: 0;
+    }
+    .answer-input:focus { border-color: var(--accent-teal); }
+    .answer-input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .btn-submit {
+      padding: 14px 24px;
+      background: linear-gradient(135deg, var(--accent-green), #00B894);
+      color: #fff; font-size: 17px; font-weight: 800; white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(6, 214, 160, 0.35);
+    }
+
+    .feedback-banner {
+      border-radius: 14px; padding: 14px 18px;
+      display: flex; flex-direction: column; gap: 4px;
+      animation: slideUp 0.3s ease;
+    }
+    .feedback-banner.correct { background: linear-gradient(135deg, var(--accent-green), #00B894); }
+    .feedback-banner.wrong { background: linear-gradient(135deg, var(--accent-red), #EE5A24); }
+    .feedback-text { font-size: 17px; font-weight: 700; }
+    .correct-answer-text { font-size: 13px; color: rgba(255,255,255,0.85); }
+
+    .info-footer {
+      text-align: center; font-size: 11px; color: var(--text-dim);
+      margin-top: 18px; font-weight: 600; letter-spacing: 0.5px;
+    }
+
+    /* ---- LEVEL UP OVERLAY ---- */
+    .level-up-overlay {
+      position: fixed; inset: 0; display: flex; justify-content: center;
+      align-items: center; z-index: 9998; pointer-events: none;
+    }
+    .level-up-box {
+      background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));
+      color: var(--bg-mid); padding: 22px 40px; border-radius: 24px;
+      font-size: clamp(20px, 5vw, 28px); font-weight: 900;
+      box-shadow: 0 12px 50px rgba(249, 115, 22, 0.5);
+      animation: levelPop 0.5s ease; text-align: center;
+    }
+
+    /* ---- CONFETTI ---- */
+    .confetti-piece {
+      position: fixed; top: -20px; pointer-events: none; z-index: 9999;
+    }
+
+    /* ---- STREAK FLAME ---- */
+    .streak-flame { display: inline-block; animation: flamePulse 0.5s ease infinite alternate; }
+
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes levelPop { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes flamePulse { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(1.15) translateY(-2px); } }
+    @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+    /* Hide number spinners */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- HOME SCREEN -->
+    <div id="screen-home" class="screen active">
+      <div class="title-block">
+        <h1 class="main-title">Learning Quest</h1>
+        <p class="subtitle">Pick a subject to start your adventure!</p>
+      </div>
+      <div class="subject-grid">
+        <button class="btn subject-card math" onclick="selectSubject('math')">
+          <span class="subject-icon">🔢</span>
+          <span class="subject-label">Math</span>
+          <span class="subject-desc">Addition, subtraction, multiplication & more</span>
+        </button>
+        <button class="btn subject-card spelling" onclick="selectSubject('spelling')">
+          <span class="subject-icon">📖</span>
+          <span class="subject-label">Spelling</span>
+          <span class="subject-desc">Listen to words and spell them correctly</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- GRADE SCREEN -->
+    <div id="screen-grade" class="screen">
+      <button class="btn btn-back" onclick="showScreen('home')">← Back</button>
+      <div class="title-block">
+        <h1 class="main-title" id="grade-title">🔢 Math</h1>
+        <p class="subtitle">Choose your grade level</p>
+      </div>
+      <div class="grade-grid">
+        <button class="btn grade-card g2" onclick="startGame(2)">
+          <span class="grade-number">Grade 2</span>
+          <span class="grade-age">Ages 7-8</span>
+        </button>
+        <button class="btn grade-card g3" onclick="startGame(3)">
+          <span class="grade-number">Grade 3</span>
+          <span class="grade-age">Ages 8-9</span>
+        </button>
+        <button class="btn grade-card g4" onclick="startGame(4)">
+          <span class="grade-number">Grade 4</span>
+          <span class="grade-age">Ages 9-10</span>
+        </button>
+        <button class="btn grade-card g5" onclick="startGame(5)">
+          <span class="grade-number">Grade 5</span>
+          <span class="grade-age">Ages 10-11</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- PLAY SCREEN -->
+    <div id="screen-play" class="screen">
+      <div class="play-header">
+        <button class="btn btn-back" onclick="showScreen('home')">← Home</button>
+        <div class="stats-row">
+          <div class="stat-badge">
+            <span class="stat-label">Score</span>
+            <span class="stat-value" id="stat-score">0/0</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-label">Streak</span>
+            <span class="stat-value" id="stat-streak">0</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-label">Level</span>
+            <span class="stat-value" id="stat-level">1/5</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-label" id="progress-label">4 more correct to level up!</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+          <div class="progress-dot" id="dot-0" style="left:25%"></div>
+          <div class="progress-dot" id="dot-1" style="left:50%"></div>
+          <div class="progress-dot" id="dot-2" style="left:75%"></div>
+          <div class="progress-dot" id="dot-3" style="left:100%"></div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-type" id="problem-type">Solve this problem</div>
+
+        <div id="math-area">
+          <span class="math-expression" id="math-expression"></span>
+        </div>
+        <div id="spelling-area" class="spelling-area" style="display:none">
+          <button class="btn btn-speak" id="btn-speak" onclick="speakWord()">🔊 Hear the Word</button>
+          <div class="hint-text" id="hint-text" style="display:none"></div>
+        </div>
+
+        <div class="input-row">
+          <input
+            id="answer-input"
+            class="answer-input"
+            placeholder="Your answer..."
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
+          <button class="btn btn-submit" onclick="checkAnswer()">Check ✓</button>
+        </div>
+
+        <div id="feedback" style="display:none"></div>
+      </div>
+
+      <div class="info-footer" id="info-footer"></div>
+    </div>
+
+    <!-- LEVEL UP OVERLAY -->
+    <div id="level-up-overlay" class="level-up-overlay" style="display:none">
+      <div class="level-up-box" id="level-up-msg"></div>
+    </div>
+
+    <!-- CONFETTI CONTAINER -->
+    <div id="confetti-container"></div>
+  </div>
+
+  <script>
+    // ===================== WORD BANKS =====================
+    const SPELLING_WORDS = {
+      2: {
+        1: ["cat","dog","run","big","sun","hat","bed","map","cup","leg","pig","top","red","box","fun"],
+        2: ["jump","play","stop","fish","tree","frog","milk","duck","wish","king","drum","ship","nest","pink","lamp"],
+        3: ["happy","green","sleep","black","brown","plant","three","white","small","bring","drink","smile","float","chair","stone"],
+        4: ["friend","should","please","school","people","around","before","twelve","change","follow","pretty","always","animal","father","mother"],
+        5: ["because","through","thought","brother","another","morning","nothing","tonight","outside","picture","between","hundred","kitchen","blanket","mittens"],
+      },
+      3: {
+        1: ["lake","home","time","five","give","come","some","bone","note","fire","more","side","wide","hope","ride"],
+        2: ["begin","study","water","never","after","story","every","again","world","write","start","laugh","power","guess","quiet"],
+        3: ["beauty","center","simple","circle","listen","castle","garden","orange","planet","silver","street","bridge","finger","basket","ladder"],
+        4: ["trouble","country","weather","journey","already","evening","against","certain","million","special","library","mystery","harvest","balance","captain"],
+        5: ["calendar","elephant","favorite","surprise","sandwich","dinosaur","sentence","treasure","question","engineer","alphabet","document","umbrella","birthday","complete"],
+      },
+      4: {
+        1: ["brave","grain","youth","chief","sworn","claim","drift","flame","globe","marsh","nerve","pride","reign","sweep","vault"],
+        2: ["breeze","canyon","divide","falcon","gadget","impact","legend","magnet","narrow","orphan","pastel","rescue","salmon","target","vacuum"],
+        3: ["achieve","bargain","compete","decimal","exhaust","fiction","grizzly","horizon","inquiry","lantern","mineral","nucleus","opinion","portion","reflect"],
+        4: ["abundant","collapse","distance","evidence","fragment","generate","monopoly","navigate","opposite","passport","quantity","recharge","syllable","triangle","universe"],
+        5: ["advantage","brilliant","character","determine","education","frequency","guarantee","imaginary","knowledge","machinery","necessary","operation","passenger","recognize","structure"],
+      },
+      5: {
+        1: ["adept","clash","dwell","forge","guilt","haven","knack","moral","plead","quota","realm","swear","trait","vigor","yield"],
+        2: ["absorb","census","diesel","embark","fiesta","gravel","ignite","jostle","kernel","locker","muster","novice","phenom","summit","whimsy"],
+        3: ["acquire","crusade","descent","exhibit","genuine","loyalty","optimum","perplex","rapport","stadium","tribute","venture","warrant","analyze","broaden"],
+        4: ["altitude","boundary","campaign","domestic","exchange","flourish","hardship","invasion","judgment","latitude","merchant","nuisance","peculiar","radiance","sequence"],
+        5: ["abolition","chameleon","deception","elaborate","fascinate","guarantee","hypnotize","improvise","maneuvers","negotiate","privilege","reinforce","stimulate","technique","versatile"],
+      },
+    };
+
+    // ===================== STATE =====================
+    let state = {
+      subject: null, grade: null, difficulty: 1,
+      problem: null, streak: 0,
+      totalCorrect: 0, totalAttempted: 0,
+      consecutiveCorrect: 0, consecutiveWrong: 0,
+    };
+    const CORRECT_TO_LEVEL_UP = 4;
+    const WRONG_TO_LEVEL_DOWN = 3;
+
+    // ===================== HELPERS =====================
+    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    const CORRECT_MSGS = ["Awesome! 🎉","You got it! ⭐","Amazing! 🚀","Brilliant! 💡","Super star! 🌟","Nailed it! 🎯","Fantastic! 🎊","Way to go! 🏆","Perfect! 💎","Outstanding! 🔥","You rock! 🎸","Incredible! 🦄"];
+    const WRONG_MSGS = ["Almost! Try again! 💪","So close! Keep going! 🌈","Not quite, you'll get the next one! 🍀","Keep trying! You're learning! 📚"];
+    const LEVEL_UP_MSGS = ["LEVEL UP! You're on fire! 🔥🔥🔥","DIFFICULTY INCREASED! You're unstoppable! 🚀","NEXT LEVEL! Your brain is growing! 🧠✨","POWERED UP! You're a superstar! ⭐⭐⭐"];
+
+    // ===================== MATH GENERATOR =====================
+    function generateMathProblem(grade, diff) {
+      let a, b, answer, question;
+      if (grade === 2) {
+        if (diff <= 2) { a = randInt(1,10*diff); b = randInt(1,10*diff); if (Math.random()>0.5){answer=a+b;question=`${a} + ${b}`;}else{if(a<b)[a,b]=[b,a];answer=a-b;question=`${a} − ${b}`;} }
+        else if (diff===3) { a=randInt(10,50);b=randInt(10,50);if(Math.random()>0.5){answer=a+b;question=`${a} + ${b}`;}else{if(a<b)[a,b]=[b,a];answer=a-b;question=`${a} − ${b}`;} }
+        else if (diff===4) { a=randInt(2,5);b=randInt(2,5);answer=a*b;question=`${a} × ${b}`; }
+        else { a=randInt(2,10);b=randInt(2,10);answer=a*b;question=`${a} × ${b}`; }
+      } else if (grade === 3) {
+        if (diff<=2) { a=randInt(10,50*diff);b=randInt(10,50*diff);if(Math.random()>0.5){answer=a+b;question=`${a} + ${b}`;}else{if(a<b)[a,b]=[b,a];answer=a-b;question=`${a} − ${b}`;} }
+        else if (diff===3) { a=randInt(2,9);b=randInt(2,9);answer=a*b;question=`${a} × ${b}`; }
+        else if (diff===4) { a=randInt(2,9);b=randInt(2,9);const p=a*b;answer=b;question=`${p} ÷ ${a}`; }
+        else { a=randInt(100,500);b=randInt(100,500);answer=a+b;question=`${a} + ${b}`; }
+      } else if (grade === 4) {
+        if (diff<=2) { a=randInt(2,12);b=randInt(2,12);answer=a*b;question=`${a} × ${b}`; }
+        else if (diff===3) { a=randInt(12,50);b=randInt(2,9);answer=a*b;question=`${a} × ${b}`; }
+        else if (diff===4) { b=randInt(2,12);answer=randInt(5,25);a=b*answer;question=`${a} ÷ ${b}`; }
+        else { a=randInt(10,50);b=randInt(2,9);const c=randInt(1,20);answer=a*b+c;question=`${a} × ${b} + ${c}`; }
+      } else {
+        if (diff<=2) { a=randInt(10,99);b=randInt(2,12);answer=a*b;question=`${a} × ${b}`; }
+        else if (diff===3) { b=randInt(5,25);answer=randInt(3,15);a=b*answer;question=`${a} ÷ ${b}`; }
+        else if (diff===4) { a=randInt(1,9);b=[2,4,5,10][randInt(0,3)];answer=a/b;question=`${a} ÷ ${b}`; }
+        else { a=randInt(2,12);const exp=randInt(2,3);answer=Math.pow(a,exp);question=`${a}${exp===2?'²':'³'}`; }
+      }
+      return { question, answer: String(answer) };
+    }
+
+    // ===================== SCREENS =====================
+    function showScreen(name) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + name).classList.add('active');
+    }
+
+    function selectSubject(subj) {
+      state.subject = subj;
+      document.getElementById('grade-title').textContent = subj === 'math' ? '🔢 Math' : '📖 Spelling';
+      showScreen('grade');
+    }
+
+    function startGame(grade) {
+      state.grade = grade;
+      state.difficulty = 1;
+      state.streak = 0;
+      state.totalCorrect = 0;
+      state.totalAttempted = 0;
+      state.consecutiveCorrect = 0;
+      state.consecutiveWrong = 0;
+      generateProblem();
+      showScreen('play');
+      updateUI();
+      setTimeout(() => document.getElementById('answer-input').focus(), 300);
+    }
+
+    // ===================== PROBLEM GENERATION =====================
+    function generateProblem() {
+      const { subject, grade, difficulty } = state;
+      if (subject === 'math') {
+        state.problem = generateMathProblem(grade, difficulty);
+      } else {
+        const words = SPELLING_WORDS[grade]?.[difficulty] || SPELLING_WORDS[grade]?.[1];
+        const word = pickRandom(words);
+        state.problem = { question: word, answer: word };
+      }
+      document.getElementById('answer-input').value = '';
+      document.getElementById('feedback').style.display = 'none';
+      document.getElementById('hint-text').style.display = 'none';
+      updateUI();
+
+      if (subject === 'spelling') {
+        setTimeout(() => speakWord(), 400);
+      }
+      setTimeout(() => document.getElementById('answer-input').focus(), 100);
+    }
+
+    // ===================== SPEAK WORD =====================
+    function speakWord() {
+      if (state.problem && state.subject === 'spelling' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(state.problem.question);
+        u.rate = 0.75;
+        u.pitch = 1.0;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    // ===================== CHECK ANSWER =====================
+    function checkAnswer() {
+      const input = document.getElementById('answer-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const correct = state.subject === 'math'
+        ? parseFloat(val) === parseFloat(state.problem.answer)
+        : val.toLowerCase() === state.problem.answer.toLowerCase();
+
+      state.totalAttempted++;
+
+      if (correct) {
+        state.totalCorrect++;
+        state.streak++;
+        state.consecutiveWrong = 0;
+        state.consecutiveCorrect++;
+
+        if (state.consecutiveCorrect >= CORRECT_TO_LEVEL_UP && state.difficulty < 5) {
+          state.difficulty++;
+          state.consecutiveCorrect = 0;
+          showLevelUp(pickRandom(LEVEL_UP_MSGS));
+          showConfetti();
+          showFeedback(true, pickRandom(CORRECT_MSGS));
+          setTimeout(() => generateProblem(), 1200);
+        } else {
+          showFeedback(true, pickRandom(CORRECT_MSGS));
+          setTimeout(() => generateProblem(), 900);
+        }
+      } else {
+        state.streak = 0;
+        state.consecutiveCorrect = 0;
+        state.consecutiveWrong++;
+
+        if (state.consecutiveWrong >= WRONG_TO_LEVEL_DOWN && state.difficulty > 1) {
+          state.difficulty--;
+          state.consecutiveWrong = 0;
+          showFeedback(false, "Let's try an easier level. You've got this! 💪", state.problem.answer);
+          setTimeout(() => generateProblem(), 2000);
+        } else {
+          if (state.subject === 'spelling') {
+            const word = state.problem.answer;
+            const hintChars = Math.floor(word.length * 0.4);
+            const hint = word.substring(0, hintChars + 1) + word.substring(hintChars + 1).replace(/[a-z]/gi, ' _');
+            const hintEl = document.getElementById('hint-text');
+            hintEl.innerHTML = 'Hint: <strong>' + hint + '</strong>';
+            hintEl.style.display = 'block';
+          }
+          showFeedback(false, pickRandom(WRONG_MSGS), state.problem.answer);
+          setTimeout(() => generateProblem(), 2200);
+        }
+      }
+
+      input.value = '';
+      updateUI();
+    }
+
+    // ===================== UI UPDATES =====================
+    function updateUI() {
+      document.getElementById('stat-score').textContent = `${state.totalCorrect}/${state.totalAttempted}`;
+
+      let streakHTML = String(state.streak);
+      if (state.streak >= 2) {
+        const size = Math.min(state.streak * 4 + 16, 48);
+        streakHTML += ` <span class="streak-flame" style="font-size:${size}px">🔥</span>`;
+      }
+      document.getElementById('stat-streak').innerHTML = streakHTML;
+      document.getElementById('stat-level').textContent = `${state.difficulty}/5`;
+
+      // Progress
+      const remaining = CORRECT_TO_LEVEL_UP - state.consecutiveCorrect;
+      document.getElementById('progress-label').textContent =
+        state.difficulty < 5 ? `${remaining} more correct to level up!` : "Max level — you're a champion!";
+      const pct = (state.consecutiveCorrect / CORRECT_TO_LEVEL_UP) * 100;
+      document.getElementById('progress-fill').style.width = Math.min(pct, 100) + '%';
+      for (let i = 0; i < CORRECT_TO_LEVEL_UP; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (dot) {
+          dot.className = 'progress-dot' + (i < state.consecutiveCorrect ? ' filled' : '');
+        }
+      }
+
+      // Problem display
+      if (state.subject === 'math') {
+        document.getElementById('math-area').style.display = 'block';
+        document.getElementById('spelling-area').style.display = 'none';
+        document.getElementById('problem-type').textContent = 'Solve this problem';
+        document.getElementById('math-expression').textContent = (state.problem?.question || '') + ' = ?';
+        document.getElementById('answer-input').type = 'number';
+        document.getElementById('answer-input').placeholder = 'Your answer...';
+      } else {
+        document.getElementById('math-area').style.display = 'none';
+        document.getElementById('spelling-area').style.display = 'flex';
+        document.getElementById('problem-type').textContent = 'Spell the word you hear';
+        document.getElementById('answer-input').type = 'text';
+        document.getElementById('answer-input').placeholder = 'Type the word...';
+      }
+
+      document.getElementById('info-footer').textContent =
+        `Grade ${state.grade} · ${state.subject === 'math' ? 'Math' : 'Spelling'} · Difficulty ${state.difficulty}/5 · ${state.consecutiveCorrect} in a row`;
+    }
+
+    function showFeedback(correct, message, correctAnswer) {
+      const el = document.getElementById('feedback');
+      let html = `<div class="feedback-banner ${correct ? 'correct' : 'wrong'}">
+        <span class="feedback-text">${message}</span>`;
+      if (!correct && correctAnswer) {
+        html += `<span class="correct-answer-text">The answer was: <strong>${correctAnswer}</strong></span>`;
+      }
+      html += '</div>';
+      el.innerHTML = html;
+      el.style.display = 'block';
+    }
+
+    function showLevelUp(msg) {
+      const overlay = document.getElementById('level-up-overlay');
+      document.getElementById('level-up-msg').textContent = msg;
+      overlay.style.display = 'flex';
+      setTimeout(() => overlay.style.display = 'none', 2500);
+    }
+
+    function showConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['#FF6B6B','#4ECDC4','#FFE66D','#A78BFA','#F97316','#06D6A0','#FF69B4','#00D4FF'];
+      let html = '';
+      for (let i = 0; i < 40; i++) {
+        const color = colors[i % colors.length];
+        const left = Math.random() * 100;
+        const delay = Math.random() * 0.5;
+        const size = randInt(6, 14);
+        const dur = 1.5 + Math.random();
+        const radius = Math.random() > 0.5 ? '50%' : '2px';
+        const rot = randInt(0, 360);
+        html += `<div class="confetti-piece" style="left:${left}%;width:${size}px;height:${size}px;background:${color};border-radius:${radius};animation:confettiFall ${dur}s ease-out ${delay}s forwards;transform:rotate(${rot}deg)"></div>`;
+      }
+      container.innerHTML = html;
+      setTimeout(() => container.innerHTML = '', 3000);
+    }
+
+    // ===================== INPUT HANDLING =====================
+    document.getElementById('answer-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkAnswer();
+    });
+
+    // ===================== SERVICE WORKER =====================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          console.log('SW registered:', reg.scope);
+        }).catch(err => {
+          console.log('SW registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
