@@ -8,213 +8,257 @@
   <meta name="apple-mobile-web-app-title" content="Learning Quest">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0F0A2E">
-  <meta name="description" content="Math, Spelling, Scramble & Geography for grades 2-5">
   <title>Learning Quest</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-deep:#0F0A2E;--bg-mid:#1A1145;--accent-teal:#4ECDC4;--accent-green:#06D6A0;
-      --accent-yellow:#FFE66D;--accent-orange:#F97316;--accent-red:#FF6B6B;
-      --accent-purple:#A78BFA;--accent-violet:#7C3AED;
-      --text-primary:#fff;--text-muted:rgba(255,255,255,0.6);--text-dim:rgba(255,255,255,0.35);
-      --glass:rgba(255,255,255,0.06);--glass-border:rgba(255,255,255,0.1);
-    }
+    :root{--bg-deep:#0F0A2E;--bg-mid:#1A1145;--accent-teal:#4ECDC4;--accent-green:#06D6A0;--accent-yellow:#FFE66D;--accent-orange:#F97316;--accent-red:#FF6B6B;--accent-purple:#A78BFA;--accent-violet:#7C3AED;--text-primary:#fff;--text-muted:rgba(255,255,255,0.6);--text-dim:rgba(255,255,255,0.35);--glass:rgba(255,255,255,0.06);--glass-border:rgba(255,255,255,0.1)}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{min-height:100vh;min-height:100dvh;overflow-x:hidden}
     body{font-family:'Nunito','Segoe UI',sans-serif;background:linear-gradient(145deg,var(--bg-deep) 0%,var(--bg-mid) 35%,#0D1B3E 70%,#071428 100%);color:var(--text-primary);display:flex;justify-content:center;padding:16px;padding-top:env(safe-area-inset-top,16px);padding-bottom:env(safe-area-inset-bottom,16px)}
     #app{width:100%;max-width:560px}
-    .btn{border:none;border-radius:16px;cursor:pointer;font-family:inherit;font-weight:700;transition:transform 0.2s,box-shadow 0.2s;-webkit-user-select:none;user-select:none}
+    .btn{border:none;border-radius:16px;cursor:pointer;font-family:inherit;font-weight:700;transition:transform 0.2s;-webkit-user-select:none;user-select:none}
     .btn:active{transform:scale(0.96)!important}
     .btn-back{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:10px 20px;border-radius:12px;font-size:14px;margin-bottom:16px}
     .screen{display:none;animation:fadeIn 0.35s ease}.screen.active{display:block}
-    .title-block{text-align:center;margin:24px 0 32px}
-    .main-title{font-size:clamp(34px,9vw,50px);font-weight:900;background:linear-gradient(135deg,var(--accent-yellow),var(--accent-orange),var(--accent-red),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;line-height:1.1}
-    .subtitle{font-size:16px;color:var(--text-muted);margin-top:8px;font-weight:600}
-    .name-input-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:10px}
-    .name-input{width:100%;max-width:360px;padding:16px 20px;border-radius:16px;border:2px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:22px;font-weight:700;font-family:inherit;outline:none;text-align:center;transition:border-color 0.2s}
+    .title-block{text-align:center;margin:20px 0 28px}
+    .main-title{font-size:clamp(32px,9vw,48px);font-weight:900;background:linear-gradient(135deg,var(--accent-yellow),var(--accent-orange),var(--accent-red),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;line-height:1.1}
+    .subtitle{font-size:15px;color:var(--text-muted);margin-top:8px;font-weight:600}
+
+    /* Name + Profiles */
+    .name-input-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:10px}
+    .name-input{width:100%;max-width:340px;padding:14px 18px;border-radius:16px;border:2px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:20px;font-weight:700;font-family:inherit;outline:none;text-align:center}
     .name-input:focus{border-color:var(--accent-teal)}
     .name-input::placeholder{color:rgba(255,255,255,0.25)}
-    .btn-go{padding:16px 48px;font-size:20px;color:#fff;border-radius:18px;background:linear-gradient(135deg,var(--accent-green),#00B894);box-shadow:0 4px 20px rgba(6,214,160,0.4)}
-    .subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .subject-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px 14px;border-radius:20px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3)}
+    .btn-go{padding:14px 44px;font-size:18px;color:#fff;border-radius:16px;background:linear-gradient(135deg,var(--accent-green),#00B894);box-shadow:0 4px 20px rgba(6,214,160,0.4)}
+    .profiles-section{margin-top:28px;width:100%;max-width:400px}
+    .profiles-title{font-size:14px;color:var(--text-muted);font-weight:700;margin-bottom:10px;text-align:center}
+    .profile-list{display:flex;flex-direction:column;gap:8px}
+    .profile-btn{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-border);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+    .profile-btn:active{transform:scale(0.97)}
+    .profile-meta{font-size:11px;color:var(--text-muted);font-weight:600}
+    .profile-del{background:none;border:none;color:var(--accent-red);font-size:18px;cursor:pointer;padding:4px 8px;opacity:0.6}
+    .profile-del:hover{opacity:1}
+    .daily-streak-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:linear-gradient(135deg,var(--accent-orange),var(--accent-yellow));color:var(--bg-deep);font-weight:800;font-size:14px;margin-top:8px}
+
+    /* Subject grid */
+    .subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .subject-card{display:flex;flex-direction:column;align-items:center;gap:3px;padding:20px 12px;border-radius:18px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3)}
     .subject-card.math{background:linear-gradient(135deg,#1e3a5f,#2d5a87);border:1px solid rgba(78,205,196,0.3)}
     .subject-card.spelling{background:linear-gradient(135deg,#3b1f5e,#5b2d8e);border:1px solid rgba(167,139,250,0.3)}
     .subject-card.scramble{background:linear-gradient(135deg,#8B4513,#D2691E);border:1px solid rgba(255,165,0,0.3)}
     .subject-card.geography{background:linear-gradient(135deg,#0d6e3f,#15a05a);border:1px solid rgba(6,214,160,0.3)}
-    .subject-icon{font-size:36px}
-    .subject-label{font-size:18px;font-weight:800}
-    .subject-desc{font-size:11px;color:rgba(255,255,255,0.6);font-weight:500;text-align:center}
+    .subject-icon{font-size:32px}.subject-label{font-size:16px;font-weight:800}.subject-desc{font-size:10px;color:rgba(255,255,255,0.6);font-weight:500;text-align:center}
+    .home-bottom-btns{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+    .btn-secondary{padding:12px 24px;font-size:14px;color:#fff;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);width:100%;text-align:center}
+
+    /* Grade */
     .grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .grade-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:30px 16px;border-radius:20px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3)}
+    .grade-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:28px 14px;border-radius:18px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3)}
     .grade-card.g2{background:linear-gradient(135deg,#FF6B6B,#EE5A24)}.grade-card.g3{background:linear-gradient(135deg,#4ECDC4,#0ABDE3)}.grade-card.g4{background:linear-gradient(135deg,#A78BFA,#7C3AED)}.grade-card.g5{background:linear-gradient(135deg,#F97316,#F59E0B)}
-    .grade-number{font-size:22px;font-weight:800}.grade-age{font-size:12px;color:rgba(255,255,255,0.7);font-weight:500}
-    .voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .voice-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px 12px;border-radius:20px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3);transition:outline 0.2s;outline:3px solid transparent;outline-offset:3px}
-    .voice-card.selected{outline:3px solid var(--accent-yellow)}
+    .grade-number{font-size:20px;font-weight:800}.grade-age{font-size:11px;color:rgba(255,255,255,0.7)}
+
+    /* Mode select */
+    .mode-grid{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+    .mode-card{display:flex;align-items:center;gap:16px;padding:22px 20px;border-radius:18px;color:#fff;width:100%;box-shadow:0 6px 24px rgba(0,0,0,0.3)}
+    .mode-card.practice{background:linear-gradient(135deg,#1e3a5f,#2d5a87);border:1px solid rgba(78,205,196,0.3)}
+    .mode-card.timed{background:linear-gradient(135deg,#8B0000,#DC143C);border:1px solid rgba(255,107,107,0.3)}
+    .mode-icon{font-size:36px}.mode-info{display:flex;flex-direction:column}.mode-name{font-size:18px;font-weight:800}.mode-desc{font-size:12px;color:rgba(255,255,255,0.65)}
+
+    /* Voice */
+    .voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .voice-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:22px 10px;border-radius:18px;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,0.3);outline:3px solid transparent;outline-offset:3px;transition:outline 0.2s}
+    .voice-card.selected{outline-color:var(--accent-yellow)}
     .voice-card.us-woman{background:linear-gradient(135deg,#E91E8C,#C2185B)}.voice-card.us-man{background:linear-gradient(135deg,#1565C0,#0D47A1)}.voice-card.uk-woman{background:linear-gradient(135deg,#7B1FA2,#4A148C)}.voice-card.uk-man{background:linear-gradient(135deg,#2E7D32,#1B5E20)}
-    .voice-emoji{font-size:36px}.voice-label{font-size:14px;font-weight:800;text-align:center}.voice-preview{font-size:10px;color:rgba(255,255,255,0.6);font-weight:600}
-    .play-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-    .stats-row{display:flex;gap:8px;flex-wrap:wrap}
-    .stat-badge{display:flex;flex-direction:column;align-items:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:5px 12px;min-width:56px}
-    .stat-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.45);font-weight:700}
-    .stat-value{font-size:17px;font-weight:800;color:var(--accent-yellow)}
-    .progress-section{margin-bottom:20px}
-    .progress-label{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:5px;font-weight:600;text-align:center}
-    .progress-track{position:relative;height:10px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:visible}
-    .progress-fill{height:100%;border-radius:10px;transition:width 0.5s ease;background:linear-gradient(90deg,var(--accent-teal),var(--accent-green),var(--accent-yellow))}
-    .progress-dot{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,0.35);transition:all 0.3s ease;transform:translate(-50%,-50%)}
+    .voice-emoji{font-size:32px}.voice-label{font-size:13px;font-weight:800;text-align:center}.voice-preview{font-size:10px;color:rgba(255,255,255,0.5)}
+
+    /* Play */
+    .play-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .stats-row{display:flex;gap:6px;flex-wrap:wrap}
+    .stat-badge{display:flex;flex-direction:column;align-items:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;padding:4px 10px;min-width:50px}
+    .stat-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);font-weight:700}
+    .stat-value{font-size:16px;font-weight:800;color:var(--accent-yellow)}
+    .timer-badge{background:linear-gradient(135deg,#8B0000,#DC143C)!important;border-color:rgba(255,107,107,0.4)!important}
+    .timer-badge .stat-value{color:#fff}
+    .progress-section{margin-bottom:16px}
+    .progress-label{font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:4px;font-weight:600;text-align:center}
+    .progress-track{position:relative;height:8px;background:rgba(255,255,255,0.08);border-radius:8px;overflow:visible}
+    .progress-fill{height:100%;border-radius:8px;transition:width 0.5s;background:linear-gradient(90deg,var(--accent-teal),var(--accent-green),var(--accent-yellow))}
+    .progress-dot{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);transition:all 0.3s;transform:translate(-50%,-50%)}
     .progress-dot.filled{background:var(--accent-yellow)!important;transform:translate(-50%,-50%) scale(1.2)}
-    .problem-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;padding:28px 20px 22px;text-align:center;backdrop-filter:blur(10px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
-    .problem-type{font-size:12px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:16px}
-    .math-expression{font-size:clamp(30px,8vw,42px);font-weight:900;color:#fff;letter-spacing:2px;display:block;margin-bottom:22px}
-    .spelling-area{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px}
-    .btn-speak{background:linear-gradient(135deg,var(--accent-purple),var(--accent-violet));padding:14px 28px;font-size:17px;color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
-    .btn-sentence{background:linear-gradient(135deg,#E91E8C,#C2185B);padding:10px 22px;font-size:14px;color:#fff;box-shadow:0 3px 14px rgba(233,30,140,0.3)}
-    .hint-text{font-size:14px;color:var(--text-muted);font-family:'Courier New',monospace;letter-spacing:3px}
-    .scramble-display{font-size:clamp(28px,7vw,38px);font-weight:900;color:var(--accent-yellow);letter-spacing:4px;display:block;margin-bottom:22px;font-family:'Courier New',monospace}
-    .geo-question{font-size:clamp(17px,4.5vw,22px);font-weight:800;color:#fff;margin-bottom:20px;line-height:1.4}
-    .geo-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-    .geo-opt{padding:14px 12px;border-radius:14px;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.15);color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s;text-align:center}
-    .geo-opt:active{transform:scale(0.96)}
+    .problem-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:22px;padding:24px 18px 20px;text-align:center;backdrop-filter:blur(10px);box-shadow:0 10px 36px rgba(0,0,0,0.3)}
+    .problem-type{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:14px}
+    .math-expression{font-size:clamp(28px,7vw,40px);font-weight:900;color:#fff;letter-spacing:2px;display:block;margin-bottom:20px}
+    .spelling-area{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:16px}
+    .btn-speak{background:linear-gradient(135deg,var(--accent-purple),var(--accent-violet));padding:12px 24px;font-size:16px;color:#fff;box-shadow:0 4px 16px rgba(124,58,237,0.4)}
+    .btn-sentence{background:linear-gradient(135deg,#E91E8C,#C2185B);padding:8px 20px;font-size:13px;color:#fff}
+    .hint-text{font-size:13px;color:var(--text-muted);font-family:'Courier New',monospace;letter-spacing:3px}
+    .scramble-display{font-size:clamp(26px,7vw,36px);font-weight:900;color:var(--accent-yellow);letter-spacing:4px;display:block;margin-bottom:20px;font-family:'Courier New',monospace}
+    .geo-question{font-size:clamp(16px,4vw,20px);font-weight:800;color:#fff;margin-bottom:16px;line-height:1.4}
+    .geo-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+    .geo-opt{padding:12px 10px;border-radius:12px;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.15);color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s;text-align:center}
     .geo-opt.correct-pick{background:linear-gradient(135deg,var(--accent-green),#00B894)!important;border-color:var(--accent-green)!important}
     .geo-opt.wrong-pick{background:linear-gradient(135deg,var(--accent-red),#EE5A24)!important;border-color:var(--accent-red)!important}
-    .geo-opt.reveal-correct{border-color:var(--accent-green)!important;box-shadow:0 0 12px rgba(6,214,160,0.5)}
-    .input-row{display:flex;gap:10px;margin-bottom:14px}
-    .answer-input{flex:1;padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:20px;font-weight:700;font-family:inherit;outline:none;text-align:center;transition:border-color 0.2s;min-width:0}
+    .geo-opt.reveal-correct{border-color:var(--accent-green)!important;box-shadow:0 0 10px rgba(6,214,160,0.5)}
+    .input-row{display:flex;gap:8px;margin-bottom:12px}
+    .answer-input{flex:1;padding:12px 14px;border-radius:12px;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;font-size:18px;font-weight:700;font-family:inherit;outline:none;text-align:center;min-width:0}
     .answer-input:focus{border-color:var(--accent-teal)}.answer-input::placeholder{color:rgba(255,255,255,0.25)}
-    .btn-submit{padding:14px 24px;background:linear-gradient(135deg,var(--accent-green),#00B894);color:#fff;font-size:17px;font-weight:800;white-space:nowrap;box-shadow:0 4px 16px rgba(6,214,160,0.35)}
-    .feedback-banner{border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:4px;animation:slideUp 0.3s ease}
+    .btn-submit{padding:12px 20px;background:linear-gradient(135deg,var(--accent-green),#00B894);color:#fff;font-size:16px;font-weight:800;white-space:nowrap}
+    .feedback-banner{border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:3px;animation:slideUp 0.3s}
     .feedback-banner.correct{background:linear-gradient(135deg,var(--accent-green),#00B894)}.feedback-banner.wrong{background:linear-gradient(135deg,var(--accent-red),#EE5A24)}
-    .feedback-text{font-size:17px;font-weight:700}.correct-answer-text{font-size:13px;color:rgba(255,255,255,0.85)}
-    .info-footer{text-align:center;font-size:11px;color:var(--text-dim);margin-top:18px;font-weight:600;letter-spacing:0.5px}
+    .feedback-text{font-size:16px;font-weight:700}.correct-answer-text{font-size:12px;color:rgba(255,255,255,0.85)}
+    .info-footer{text-align:center;font-size:10px;color:var(--text-dim);margin-top:14px;font-weight:600}
+
+    /* Timed results */
+    .timed-results{text-align:center;padding:20px}.timed-results h2{font-size:28px;margin-bottom:16px}.timed-stat{font-size:18px;margin:8px 0;color:var(--text-muted)}.timed-stat b{color:var(--accent-yellow);font-size:24px}
+
+    /* Stats */
+    .stats-section{margin-bottom:24px}
+    .stats-section-title{font-size:16px;font-weight:800;margin-bottom:10px;color:var(--accent-yellow)}
+    .leaderboard{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;overflow:hidden}
+    .lb-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--glass-border)}
+    .lb-row:last-child{border-bottom:none}
+    .lb-game{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+    .lb-game-icon{font-size:18px}
+    .lb-value{font-size:18px;font-weight:900;color:var(--accent-yellow)}
+    .lb-empty{color:var(--text-dim);font-size:12px;font-style:italic}
+    .achievements-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .achievement{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);text-align:center;transition:all 0.3s}
+    .achievement.unlocked{border-color:var(--accent-yellow);box-shadow:0 0 12px rgba(255,230,109,0.15)}
+    .achievement.locked{opacity:0.35;filter:grayscale(1)}
+    .ach-icon{font-size:24px}.ach-name{font-size:10px;font-weight:800;color:var(--accent-yellow)}.ach-desc{font-size:8px;color:var(--text-muted)}
+    .achievement.locked .ach-name{color:var(--text-dim)}
+    .btn-reset{padding:8px 16px;font-size:11px;color:rgba(255,255,255,0.4);border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);margin-top:10px}
+
+    /* Parent dashboard */
+    .pin-input-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:20px}
+    .pin-input{width:160px;padding:14px;border-radius:14px;border:2px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:28px;font-weight:800;font-family:inherit;outline:none;text-align:center;letter-spacing:8px}
+    .pin-input:focus{border-color:var(--accent-teal)}
+    .parent-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:16px;margin-bottom:14px}
+    .parent-card h3{font-size:15px;font-weight:800;color:var(--accent-teal);margin-bottom:10px}
+    .parent-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid var(--glass-border)}
+    .parent-row:last-child{border-bottom:none}
+    .parent-val{font-weight:800;color:var(--accent-yellow)}
+    .weakness-tag{display:inline-block;padding:4px 10px;border-radius:8px;background:rgba(255,107,107,0.2);border:1px solid rgba(255,107,107,0.3);color:var(--accent-red);font-size:11px;font-weight:700;margin:3px}
+    .strength-tag{display:inline-block;padding:4px 10px;border-radius:8px;background:rgba(6,214,160,0.2);border:1px solid rgba(6,214,160,0.3);color:var(--accent-green);font-size:11px;font-weight:700;margin:3px}
+    .parent-pin-note{font-size:11px;color:var(--text-dim);text-align:center;margin-top:12px}
+
+    /* Overlays */
     .level-up-overlay{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;z-index:9998;pointer-events:none}
-    .level-up-box{background:linear-gradient(135deg,var(--accent-yellow),var(--accent-orange));color:var(--bg-mid);padding:28px 36px;border-radius:24px;font-size:clamp(18px,5vw,26px);font-weight:900;box-shadow:0 12px 50px rgba(249,115,22,0.5);animation:levelPop 0.5s ease;text-align:center;line-height:1.4}
-    .level-up-goat{font-size:clamp(48px,12vw,72px);display:block;margin-bottom:8px}
+    .level-up-box{background:linear-gradient(135deg,var(--accent-yellow),var(--accent-orange));color:var(--bg-mid);padding:24px 32px;border-radius:22px;font-size:clamp(16px,4.5vw,24px);font-weight:900;box-shadow:0 12px 50px rgba(249,115,22,0.5);animation:levelPop 0.5s ease;text-align:center;line-height:1.4}
+    .level-up-goat{font-size:clamp(44px,11vw,64px);display:block;margin-bottom:6px}
     .confetti-piece{position:fixed;top:-20px;pointer-events:none;z-index:9999}
     .streak-flame{display:inline-block;animation:flamePulse 0.5s ease infinite alternate}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent-yellow),var(--accent-orange));color:var(--bg-mid);padding:12px 24px;border-radius:14px;font-weight:800;font-size:14px;z-index:10000;animation:toastIn 0.4s;box-shadow:0 8px 32px rgba(249,115,22,0.4);text-align:center;max-width:88%;font-family:inherit}
     @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     @keyframes slideUp{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
     @keyframes levelPop{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-    @keyframes flamePulse{0%{transform:scale(1) translateY(0)}100%{transform:scale(1.15) translateY(-2px)}}
+    @keyframes flamePulse{0%{transform:scale(1)}100%{transform:scale(1.15) translateY(-2px)}}
     @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
     @keyframes goatBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.25) rotate(-8deg)}}
-    input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+    @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none}
     input[type="number"]{-moz-appearance:textfield}
   </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- NAME SCREEN -->
+  <!-- PROFILES / NAME -->
   <div id="screen-name" class="screen active">
-    <div class="title-block" style="margin-top:40px">
+    <div class="title-block" style="margin-top:30px">
       <h1 class="main-title">Learning Quest</h1>
-      <p class="subtitle">What's your name, superstar?</p>
+      <p class="subtitle">Who's playing today?</p>
     </div>
     <div class="name-input-wrap">
+      <div id="profiles-area" class="profiles-section"></div>
+      <div style="color:var(--text-dim);font-size:12px;font-weight:600;margin:6px 0">— or add a new player —</div>
       <input id="name-input" class="name-input" placeholder="Type your name..." maxlength="20" autocomplete="off">
       <button class="btn btn-go" onclick="submitName()">Let's Go! 🚀</button>
     </div>
   </div>
 
-  <!-- HOME SCREEN -->
+  <!-- HOME -->
   <div id="screen-home" class="screen">
     <div class="title-block">
       <h1 class="main-title">Learning Quest</h1>
       <p class="subtitle" id="home-greeting">Pick a subject!</p>
+      <div id="daily-streak-area"></div>
     </div>
     <div class="subject-grid">
-      <button class="btn subject-card math" onclick="selectSubject('math')">
-        <span class="subject-icon">🔢</span><span class="subject-label">Math</span>
-        <span class="subject-desc">Add, subtract, multiply & more</span>
-      </button>
-      <button class="btn subject-card spelling" onclick="selectSubject('spelling')">
-        <span class="subject-icon">📖</span><span class="subject-label">Spelling</span>
-        <span class="subject-desc">Listen and spell correctly</span>
-      </button>
-      <button class="btn subject-card scramble" onclick="selectSubject('scramble')">
-        <span class="subject-icon">🔀</span><span class="subject-label">Scramble</span>
-        <span class="subject-desc">Unscramble the mixed-up word</span>
-      </button>
-      <button class="btn subject-card geography" onclick="selectSubject('geography')">
-        <span class="subject-icon">🌍</span><span class="subject-label">Geography</span>
-        <span class="subject-desc">Explore the world</span>
-      </button>
+      <button class="btn subject-card math" onclick="selectSubject('math')"><span class="subject-icon">🔢</span><span class="subject-label">Math</span><span class="subject-desc">Add, subtract, multiply</span></button>
+      <button class="btn subject-card spelling" onclick="selectSubject('spelling')"><span class="subject-icon">📖</span><span class="subject-label">Spelling</span><span class="subject-desc">Listen & spell</span></button>
+      <button class="btn subject-card scramble" onclick="selectSubject('scramble')"><span class="subject-icon">🔀</span><span class="subject-label">Scramble</span><span class="subject-desc">Unscramble words</span></button>
+      <button class="btn subject-card geography" onclick="selectSubject('geography')"><span class="subject-icon">🌍</span><span class="subject-label">Geography</span><span class="subject-desc">Explore the world</span></button>
+    </div>
+    <div class="home-bottom-btns">
+      <button class="btn btn-secondary" onclick="showStats()">🏆 Stats & Achievements</button>
+      <button class="btn btn-secondary" onclick="showParentPinScreen()">👨‍👩‍👧 Parent Dashboard</button>
     </div>
   </div>
 
   <!-- VOICE SELECT -->
   <div id="screen-voice" class="screen">
     <button class="btn btn-back" onclick="showScreen('home')">← Back</button>
-    <div class="title-block">
-      <h1 class="main-title">📖 Spelling</h1>
-      <p class="subtitle">Choose a voice</p>
-    </div>
+    <div class="title-block"><h1 class="main-title">📖 Spelling</h1><p class="subtitle">Choose a voice</p></div>
     <div class="voice-grid">
       <button class="btn voice-card us-woman" onclick="selectVoice('us-woman',this)"><span class="voice-emoji">🇺🇸👩</span><span class="voice-label">American Woman</span><span class="voice-preview">Tap to preview</span></button>
       <button class="btn voice-card us-man" onclick="selectVoice('us-man',this)"><span class="voice-emoji">🇺🇸👨</span><span class="voice-label">American Man</span><span class="voice-preview">Tap to preview</span></button>
       <button class="btn voice-card uk-woman" onclick="selectVoice('uk-woman',this)"><span class="voice-emoji">🇬🇧👩</span><span class="voice-label">English Woman</span><span class="voice-preview">Tap to preview</span></button>
       <button class="btn voice-card uk-man" onclick="selectVoice('uk-man',this)"><span class="voice-emoji">🇬🇧👨</span><span class="voice-label">English Man</span><span class="voice-preview">Tap to preview</span></button>
     </div>
-    <div style="text-align:center;margin-top:20px"><button class="btn btn-go" id="btn-confirm-voice" onclick="confirmVoice()" style="display:none">Use This Voice ✓</button></div>
+    <div style="text-align:center;margin-top:16px"><button class="btn btn-go" id="btn-confirm-voice" onclick="confirmVoice()" style="display:none">Use This Voice ✓</button></div>
   </div>
 
   <!-- GRADE SELECT -->
   <div id="screen-grade" class="screen">
     <button class="btn btn-back" onclick="goBackFromGrade()">← Back</button>
-    <div class="title-block">
-      <h1 class="main-title" id="grade-title">🔢 Math</h1>
-      <p class="subtitle">Choose your grade level</p>
-    </div>
+    <div class="title-block"><h1 class="main-title" id="grade-title">🔢 Math</h1><p class="subtitle">Choose your grade</p></div>
     <div class="grade-grid">
-      <button class="btn grade-card g2" onclick="startGame(2)"><span class="grade-number">Grade 2</span><span class="grade-age">Ages 7-8</span></button>
-      <button class="btn grade-card g3" onclick="startGame(3)"><span class="grade-number">Grade 3</span><span class="grade-age">Ages 8-9</span></button>
-      <button class="btn grade-card g4" onclick="startGame(4)"><span class="grade-number">Grade 4</span><span class="grade-age">Ages 9-10</span></button>
-      <button class="btn grade-card g5" onclick="startGame(5)"><span class="grade-number">Grade 5</span><span class="grade-age">Ages 10-11</span></button>
+      <button class="btn grade-card g2" onclick="selectGrade(2)"><span class="grade-number">Grade 2</span><span class="grade-age">Ages 7-8</span></button>
+      <button class="btn grade-card g3" onclick="selectGrade(3)"><span class="grade-number">Grade 3</span><span class="grade-age">Ages 8-9</span></button>
+      <button class="btn grade-card g4" onclick="selectGrade(4)"><span class="grade-number">Grade 4</span><span class="grade-age">Ages 9-10</span></button>
+      <button class="btn grade-card g5" onclick="selectGrade(5)"><span class="grade-number">Grade 5</span><span class="grade-age">Ages 10-11</span></button>
     </div>
   </div>
 
-  <!-- PLAY SCREEN -->
+  <!-- MODE SELECT -->
+  <div id="screen-mode" class="screen">
+    <button class="btn btn-back" onclick="showScreen('grade')">← Back</button>
+    <div class="title-block"><h1 class="main-title">Choose Mode</h1><p class="subtitle" id="mode-subtitle">How do you want to play?</p></div>
+    <div class="mode-grid">
+      <button class="btn mode-card practice" onclick="startGame('practice')"><span class="mode-icon">📚</span><div class="mode-info"><span class="mode-name">Practice</span><span class="mode-desc">Take your time, level up as you go</span></div></button>
+      <button class="btn mode-card timed" onclick="startGame('timed')"><span class="mode-icon">⏱️</span><div class="mode-info"><span class="mode-name">60-Second Blitz</span><span class="mode-desc">How many can you get right in 1 minute?</span></div></button>
+    </div>
+  </div>
+
+  <!-- PLAY -->
   <div id="screen-play" class="screen">
     <div class="play-header">
-      <button class="btn btn-back" onclick="showScreen('home')">← Home</button>
+      <button class="btn btn-back" onclick="endSession()">← End</button>
       <div class="stats-row">
         <div class="stat-badge"><span class="stat-label">Score</span><span class="stat-value" id="stat-score">0/0</span></div>
         <div class="stat-badge"><span class="stat-label">Streak</span><span class="stat-value" id="stat-streak">0</span></div>
         <div class="stat-badge"><span class="stat-label">Level</span><span class="stat-value" id="stat-level">1/5</span></div>
+        <div class="stat-badge timer-badge" id="timer-badge" style="display:none"><span class="stat-label">Time</span><span class="stat-value" id="stat-timer">60</span></div>
       </div>
     </div>
-    <div class="progress-section">
+    <div class="progress-section" id="progress-section">
       <div class="progress-label" id="progress-label"></div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-        <div class="progress-dot" id="dot-0" style="left:25%"></div>
-        <div class="progress-dot" id="dot-1" style="left:50%"></div>
-        <div class="progress-dot" id="dot-2" style="left:75%"></div>
-        <div class="progress-dot" id="dot-3" style="left:100%"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div><div class="progress-dot" id="dot-0" style="left:25%"></div><div class="progress-dot" id="dot-1" style="left:50%"></div><div class="progress-dot" id="dot-2" style="left:75%"></div><div class="progress-dot" id="dot-3" style="left:100%"></div></div>
     </div>
     <div class="problem-card">
       <div class="problem-type" id="problem-type"></div>
-      <!-- Math -->
       <div id="math-area" style="display:none"><span class="math-expression" id="math-expression"></span></div>
-      <!-- Spelling -->
       <div id="spelling-area" class="spelling-area" style="display:none">
-        <button class="btn btn-speak" onclick="speakWord()">🔊 Hear the Word (×2)</button>
-        <button class="btn btn-sentence" onclick="speakSentence()">📝 Use in a Sentence</button>
+        <button class="btn btn-speak" onclick="speakWord()">🔊 Hear Word (×2)</button>
+        <button class="btn btn-sentence" onclick="speakSentence()">📝 Use in Sentence</button>
         <div class="hint-text" id="hint-text" style="display:none"></div>
       </div>
-      <!-- Scramble -->
       <div id="scramble-area" style="display:none"><span class="scramble-display" id="scramble-display"></span></div>
-      <!-- Geography -->
-      <div id="geo-area" style="display:none">
-        <div class="geo-question" id="geo-question"></div>
-        <div class="geo-options" id="geo-options"></div>
-      </div>
-      <!-- Text input (math, spelling, scramble) -->
+      <div id="geo-area" style="display:none"><div class="geo-question" id="geo-question"></div><div class="geo-options" id="geo-options"></div></div>
       <div id="text-input-area" class="input-row">
         <input id="answer-input" class="answer-input" placeholder="Your answer..." autocomplete="off" autocapitalize="off" spellcheck="false">
         <button class="btn btn-submit" onclick="checkAnswer()">Check ✓</button>
@@ -224,1895 +268,189 @@
     <div class="info-footer" id="info-footer"></div>
   </div>
 
+  <!-- TIMED RESULTS -->
+  <div id="screen-timed-results" class="screen">
+    <div class="timed-results">
+      <h2>⏱️ Time's Up!</h2>
+      <div class="timed-stat">Correct: <b id="tr-correct">0</b></div>
+      <div class="timed-stat">Attempted: <b id="tr-attempted">0</b></div>
+      <div class="timed-stat">Accuracy: <b id="tr-accuracy">0%</b></div>
+      <div class="timed-stat">Best Streak: <b id="tr-streak">0</b></div>
+      <div id="tr-record" style="margin-top:14px;color:var(--accent-yellow);font-weight:800;font-size:16px"></div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-go" onclick="startGame('timed')">Try Again ⏱️</button>
+        <button class="btn btn-secondary" onclick="showScreen('home')">← Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div id="screen-stats" class="screen">
+    <button class="btn btn-back" onclick="showScreen('home')">← Back</button>
+    <div class="title-block"><h1 class="main-title">🏆 Stats</h1><p class="subtitle" id="stats-player-name"></p></div>
+    <div class="stats-section"><div class="stats-section-title">🎯 High Scores (Practice)</div><div class="leaderboard" id="lb-highscore"></div></div>
+    <div class="stats-section"><div class="stats-section-title">⏱️ Timed Best (correct in 60s)</div><div class="leaderboard" id="lb-timed"></div></div>
+    <div class="stats-section"><div class="stats-section-title">🔥 Longest Streaks</div><div class="leaderboard" id="lb-streaks"></div></div>
+    <div class="stats-section"><div class="stats-section-title">⭐ Highest Level</div><div class="leaderboard" id="lb-levels"></div></div>
+    <div class="stats-section"><div class="stats-section-title">🏅 Achievements</div><div class="achievements-grid" id="achievements-grid"></div></div>
+    <button class="btn btn-reset" onclick="confirmResetStats()">Reset Stats</button>
+  </div>
+
+  <!-- PARENT PIN -->
+  <div id="screen-parent-pin" class="screen">
+    <button class="btn btn-back" onclick="showScreen('home')">← Back</button>
+    <div class="title-block"><h1 class="main-title">👨‍👩‍👧 Parent Zone</h1><p class="subtitle">Enter PIN to view dashboard</p></div>
+    <div class="pin-input-wrap">
+      <input id="pin-input" class="pin-input" type="password" maxlength="4" placeholder="····" inputmode="numeric">
+      <button class="btn btn-go" onclick="checkPin()">Enter</button>
+      <div class="parent-pin-note">Default PIN: 1234<br>Change in the dashboard</div>
+    </div>
+  </div>
+
+  <!-- PARENT DASHBOARD -->
+  <div id="screen-parent" class="screen">
+    <button class="btn btn-back" onclick="showScreen('home')">← Back</button>
+    <div class="title-block"><h1 class="main-title">📊 Dashboard</h1><p class="subtitle">Performance Overview</p></div>
+    <div id="parent-content"></div>
+    <div style="margin-top:18px">
+      <button class="btn btn-secondary" onclick="changePin()">🔑 Change PIN</button>
+    </div>
+  </div>
+
   <div id="level-up-overlay" class="level-up-overlay" style="display:none"><div class="level-up-box" id="level-up-msg"></div></div>
   <div id="confetti-container"></div>
 </div>
 
 <script>
-    // ===================== WORD BANKS =====================
-    const SPELLING_WORDS = {
+var SPELLING_WORDS={
       2:{1:["cat","dog","run","big","sun","hat","bed","map","cup","leg","pig","top","red","box","fun"],2:["jump","play","stop","fish","tree","frog","milk","duck","wish","king","drum","ship","nest","pink","lamp"],3:["happy","green","sleep","black","brown","plant","three","white","small","bring","drink","smile","float","chair","stone"],4:["friend","should","please","school","people","around","before","twelve","change","follow","pretty","always","animal","father","mother"],5:["because","through","thought","brother","another","morning","nothing","tonight","outside","picture","between","hundred","kitchen","blanket","mittens"]},
       3:{1:["lake","home","time","five","give","come","some","bone","note","fire","more","side","wide","hope","ride"],2:["begin","study","water","never","after","story","every","again","world","write","start","laugh","power","guess","quiet"],3:["beauty","center","simple","circle","listen","castle","garden","orange","planet","silver","street","bridge","finger","basket","ladder"],4:["trouble","country","weather","journey","already","evening","against","certain","million","special","library","mystery","harvest","balance","captain"],5:["calendar","elephant","favorite","surprise","sandwich","dinosaur","sentence","treasure","question","engineer","alphabet","document","umbrella","birthday","complete"]},
       4:{1:["brave","grain","youth","chief","sworn","claim","drift","flame","globe","marsh","nerve","pride","reign","sweep","vault"],2:["breeze","canyon","divide","falcon","gadget","impact","legend","magnet","narrow","orphan","pastel","rescue","salmon","target","vacuum"],3:["achieve","bargain","compete","decimal","exhaust","fiction","grizzly","horizon","inquiry","lantern","mineral","nucleus","opinion","portion","reflect"],4:["abundant","collapse","distance","evidence","fragment","generate","monopoly","navigate","opposite","passport","quantity","recharge","syllable","triangle","universe"],5:["advantage","brilliant","character","determine","education","frequency","guarantee","imaginary","knowledge","machinery","necessary","operation","passenger","recognize","structure"]},
-      5:{1:["adept","clash","dwell","forge","guilt","haven","knack","moral","plead","quota","realm","swear","trait","vigor","yield"],2:["absorb","census","diesel","embark","fiesta","gravel","ignite","jostle","kernel","locker","muster","novice","phenom","summit","whimsy"],3:["acquire","crusade","descent","exhibit","genuine","loyalty","optimum","perplex","rapport","stadium","tribute","venture","warrant","analyze","broaden"],4:["altitude","boundary","campaign","domestic","exchange","flourish","hardship","invasion","judgment","latitude","merchant","nuisance","peculiar","radiance","sequence"],5:["abolition","chameleon","deception","elaborate","fascinate","guarantee","hypnotize","improvise","maneuvers","negotiate","privilege","reinforce","stimulate","technique","versatile"]},
-    };
+      5:{1:["adept","clash","dwell","forge","guilt","haven","knack","moral","plead","quota","realm","swear","trait","vigor","yield"],2:["absorb","census","diesel","embark","fiesta","gravel","ignite","jostle","kernel","locker","muster","novice","phenom","summit","whimsy"],3:["acquire","crusade","descent","exhibit","genuine","loyalty","optimum","perplex","rapport","stadium","tribute","venture","warrant","analyze","broaden"],4:["altitude","boundary","campaign","domestic","exchange","flourish","hardship","invasion","judgment","latitude","merchant","nuisance","peculiar","radiance","sequence"],5:["abolition","chameleon","deception","elaborate","fascinate","guarantee","hypnotize","improvise","maneuvers","negotiate","privilege","reinforce","stimulate","technique","versatile"]}};
+var SENTENCES={"cat": "The cat sat on the warm rug.", "dog": "My dog loves to play fetch.", "run": "I like to run in the park.", "big": "That is a really big tree.", "sun": "The sun is bright today.", "hat": "She wore a red hat outside.", "bed": "I made my bed this morning.", "map": "We used a map on our trip.", "cup": "Please fill my cup with water.", "leg": "The dog hurt its back leg.", "pig": "The pig rolled in the mud.", "top": "He climbed to the top of the hill.", "red": "My favorite color is red.", "box": "Put the toys in the box.", "fun": "Playing outside is so much fun.", "jump": "Watch me jump over the puddle.", "play": "Let's play a game together.", "stop": "You must stop at the red light.", "fish": "We caught a big fish at the lake.", "tree": "A bird built a nest in the tree.", "frog": "The green frog hopped away.", "milk": "I drink milk with my cereal.", "duck": "The duck swam across the pond.", "wish": "I wish I could fly like a bird.", "king": "The king sat on his golden throne.", "drum": "He played the drum in the band.", "ship": "The ship sailed across the ocean.", "nest": "The bird sat in its cozy nest.", "pink": "She painted her room pink.", "lamp": "Turn on the lamp so we can read.", "happy": "I feel happy on sunny days.", "green": "The grass is very green today.", "sleep": "I need eight hours of sleep.", "black": "The black cat crossed the road.", "brown": "He has brown eyes like his mom.", "plant": "We will plant seeds in the garden.", "three": "I have three best friends at school.", "white": "Fresh snow is bright white.", "small": "The kitten is very small.", "bring": "Please bring your backpack to class.", "drink": "I need a drink of cold water.", "smile": "Her smile made everyone feel better.", "float": "The balloon will float up high.", "chair": "Please sit in your chair quietly.", "stone": "He skipped a stone across the water.", "friend": "My best friend lives next door.", "should": "You should always be kind to others.", "please": "May I please have some more?", "school": "I walk to school every morning.", "people": "Many people came to the fair.", "around": "The dog ran around the yard.", "before": "Wash your hands before dinner.", "twelve": "There are twelve months in a year.", "change": "The leaves change color in fall.", "follow": "Please follow me to the library.", "pretty": "The garden looks so pretty in spring.", "always": "She always does her best work.", "animal": "The zoo has every kind of animal.", "father": "My father taught me to ride a bike.", "mother": "My mother makes the best pancakes.", "because": "I smiled because I was happy.", "through": "We walked through the tunnel.", "thought": "I thought the movie was great.", "brother": "My brother is older than me.", "another": "May I have another cookie please?", "morning": "The birds sing every morning.", "nothing": "There is nothing in the empty box.", "tonight": "We are having pizza tonight.", "outside": "Let's go play outside after lunch.", "picture": "She drew a beautiful picture.", "between": "The park is between two buildings.", "hundred": "There are one hundred pennies in a dollar.", "kitchen": "Mom is cooking in the kitchen.", "blanket": "The soft blanket kept me warm.", "mittens": "Wear your mittens when it snows.", "lake": "We swam in the lake all summer.", "home": "There is no place like home.", "time": "What time does the movie start?", "five": "I have five fingers on each hand.", "give": "I will give you my extra pencil.", "come": "Please come to my birthday party.", "some": "Would you like some fruit?", "bone": "The dog buried its bone in the yard.", "note": "She left a note on the fridge.", "fire": "We roasted marshmallows over the fire.", "more": "I would like more time to finish.", "side": "Walk on the right side of the hall.", "wide": "The river was very wide.", "hope": "I hope we win the game today.", "ride": "Let's ride our bikes to the park.", "begin": "Let's begin the lesson now.", "study": "I need to study for my test.", "water": "Drink plenty of water every day.", "never": "I have never seen a shooting star.", "after": "We have recess after lunch.", "story": "Grandma told us a funny story.", "every": "She practices piano every day.", "again": "Can you say that again please?", "world": "There are many countries in the world.", "write": "Please write your name on the paper.", "start": "The race will start at noon.", "laugh": "That joke made everyone laugh.", "power": "The storm knocked out the power.", "guess": "Can you guess what I am thinking?", "quiet": "The library is a quiet place.", "beauty": "The sunset was a thing of beauty.", "center": "The fountain is in the center of town.", "simple": "The recipe is quick and simple.", "circle": "The children sat in a circle.", "listen": "Please listen carefully to the directions.", "castle": "The old castle sits on a hill.", "garden": "We planted tomatoes in the garden.", "orange": "I peeled an orange for my snack.", "planet": "Earth is the third planet from the sun.", "silver": "She wore a silver necklace.", "street": "Look both ways before crossing the street.", "bridge": "The bridge goes over the river.", "finger": "She pointed her finger at the map.", "basket": "The basket was full of apples.", "ladder": "He climbed up the tall ladder.", "trouble": "Lying will only get you in trouble.", "country": "What country would you like to visit?", "weather": "The weather is perfect for a picnic.", "journey": "The journey to grandma's takes two hours.", "already": "I have already finished my homework.", "evening": "Stars appear in the evening sky.", "against": "He leaned against the old fence.", "certain": "I am certain the answer is correct.", "million": "A million is a very large number.", "special": "Today is a very special day.", "library": "I returned my books to the library.", "mystery": "The missing cat was a real mystery.", "harvest": "Farmers harvest crops in the fall.", "balance": "She kept her balance on the beam.", "captain": "The captain steered the ship safely.", "calendar": "Mark the date on your calendar.", "elephant": "The elephant is the largest land animal.", "favorite": "Pizza is my favorite food.", "surprise": "The party was a big surprise.", "sandwich": "I packed a sandwich for lunch.", "dinosaur": "The dinosaur exhibit was amazing.", "sentence": "Please write a complete sentence.", "treasure": "The pirates searched for buried treasure.", "question": "That is an excellent question.", "engineer": "The engineer designed a new bridge.", "alphabet": "There are twenty-six letters in the alphabet.", "document": "Save the document on your computer.", "umbrella": "Bring an umbrella in case it rains.", "birthday": "My birthday is in September.", "complete": "Did you complete your assignment?", "brave": "The brave firefighter saved the family.", "grain": "Bread is made from grain.", "youth": "She volunteered at the youth center.", "chief": "The chief made an important decision.", "sworn": "He was sworn in as class president.", "claim": "Nobody could claim the lost wallet.", "drift": "We watched the clouds drift across the sky.", "flame": "The candle flame flickered in the wind.", "globe": "She spun the globe to find Japan.", "marsh": "Frogs and herons live in the marsh.", "nerve": "It took a lot of nerve to speak up.", "pride": "She felt great pride in her work.", "reign": "The queen had a long and peaceful reign.", "sweep": "Please sweep the kitchen floor.", "vault": "The gymnast performed an amazing vault.", "breeze": "A cool breeze blew through the window.", "canyon": "The Grand Canyon is incredibly deep.", "divide": "Let's divide the pizza into equal slices.", "falcon": "The falcon is one of the fastest birds.", "gadget": "That new gadget is really useful.", "impact": "The meteor made a huge impact crater.", "legend": "She told us the legend of the lost city.", "magnet": "The magnet stuck to the refrigerator.", "narrow": "The path through the woods was narrow.", "orphan": "The kind family adopted the orphan.", "pastel": "She drew with pastel colors.", "rescue": "The team worked hard to rescue the hikers.", "salmon": "The salmon swam upstream to lay eggs.", "target": "He hit the target with his first arrow.", "vacuum": "Please vacuum the living room carpet.", "achieve": "You can achieve anything with hard work.", "bargain": "That shirt was a real bargain.", "compete": "The two teams will compete on Saturday.", "decimal": "Move the decimal point two places.", "exhaust": "The long hike will exhaust even the fittest.", "fiction": "My favorite genre is science fiction.", "grizzly": "The grizzly bear fished in the stream.", "horizon": "The sun dipped below the horizon.", "inquiry": "The scientist began an inquiry into the cause.", "lantern": "The old lantern lit up the dark cave.", "mineral": "Quartz is a very common mineral.", "nucleus": "The nucleus is the center of a cell.", "opinion": "Everyone is entitled to their own opinion.", "portion": "She ate a small portion of the pie.", "reflect": "The mirror will reflect the light.", "abundant": "The garden had an abundant harvest.", "collapse": "The old barn started to collapse.", "distance": "The distance to the moon is very far.", "evidence": "The detective gathered all the evidence.", "fragment": "She found a fragment of the old pot.", "generate": "Wind turbines generate electricity.", "monopoly": "We played a long game of monopoly.", "navigate": "Sailors use stars to navigate at sea.", "opposite": "Hot is the opposite of cold.", "passport": "You need a passport to travel abroad.", "quantity": "We ordered a large quantity of supplies.", "recharge": "I need to recharge my phone battery.", "syllable": "The word banana has three syllables.", "triangle": "A triangle has exactly three sides.", "universe": "The universe contains billions of stars.", "advantage": "Studying gave her an advantage on the test.", "brilliant": "She had a brilliant idea for the project.", "character": "The main character in the book is brave.", "determine": "Scientists work to determine the facts.", "education": "A good education opens many doors.", "frequency": "The frequency of the sound was very high.", "guarantee": "I guarantee you will enjoy this book.", "imaginary": "The child played with an imaginary friend.", "knowledge": "Reading increases your knowledge.", "machinery": "The factory uses heavy machinery.", "necessary": "It is necessary to wear a seatbelt.", "operation": "The doctor performed a successful operation.", "passenger": "Each passenger must have a ticket.", "recognize": "I didn't recognize her with short hair.", "structure": "The structure of the building is very strong.", "adept": "She is quite adept at solving puzzles.", "clash": "The two ideas seemed to clash.", "dwell": "They dwell in a cottage by the sea.", "forge": "The blacksmith used the forge to shape metal.", "guilt": "He felt guilt for breaking the vase.", "haven": "The library was a quiet haven for readers.", "knack": "She has a real knack for drawing.", "moral": "The moral of the story is to be honest.", "plead": "He had to plead his case before the judge.", "quota": "The factory met its production quota.", "realm": "The kingdom was the largest realm in the land.", "swear": "Do you swear to tell the truth?", "trait": "Kindness is a wonderful trait to have.", "vigor": "She tackled the project with great vigor.", "yield": "The farm will yield a good crop this year.", "absorb": "Sponges absorb water very quickly.", "census": "The census counts everyone in the country.", "diesel": "The truck runs on diesel fuel.", "embark": "We will embark on our journey tomorrow.", "fiesta": "The town held a colorful fiesta.", "gravel": "The driveway was covered with gravel.", "ignite": "A single spark can ignite a fire.", "jostle": "People jostle for space on the crowded bus.", "kernel": "Each kernel of corn popped perfectly.", "locker": "I put my books in my locker.", "muster": "She tried to muster the courage to speak.", "novice": "The novice skier took a beginner lesson.", "phenom": "The young player was a true phenom.", "summit": "The hikers reached the mountain summit.", "whimsy": "The garden was full of whimsy and color.", "acquire": "She worked hard to acquire new skills.", "crusade": "The school led a crusade against littering.", "descent": "The plane began its descent to the airport.", "exhibit": "The museum opened a new dinosaur exhibit.", "genuine": "His apology seemed genuine and heartfelt.", "loyalty": "The dog showed great loyalty to its owner.", "optimum": "The optimum temperature for sleep is cool.", "perplex": "The riddle continued to perplex everyone.", "rapport": "The teacher built a strong rapport with students.", "stadium": "The stadium was packed with cheering fans.", "tribute": "The concert was a tribute to the musician.", "venture": "Starting a business is a bold venture.", "warrant": "The evidence did not warrant further action.", "analyze": "Scientists analyze data from experiments.", "broaden": "Travel can broaden your understanding of the world.", "altitude": "The plane flew at a high altitude.", "boundary": "The fence marks the boundary of our yard.", "campaign": "The candidate ran an exciting campaign.", "domestic": "Cats are popular domestic animals.", "exchange": "Students in the exchange program visit other countries.", "flourish": "Plants flourish with sunlight and water.", "hardship": "The pioneers faced great hardship.", "invasion": "The invasion of ants ruined our picnic.", "judgment": "She showed good judgment in her decision.", "latitude": "Lines of latitude run east to west on a map.", "merchant": "The merchant sold spices from faraway lands.", "nuisance": "The buzzing fly was a real nuisance.", "peculiar": "There was a peculiar smell in the kitchen.", "radiance": "The radiance of the sunset was breathtaking.", "sequence": "Arrange the numbers in the correct sequence.", "abolition": "The abolition of slavery was a turning point.", "chameleon": "A chameleon can change its color.", "deception": "The magician used clever deception.", "elaborate": "The artist created an elaborate mural.", "fascinate": "Outer space continues to fascinate us.", "hypnotize": "The swinging watch seemed to hypnotize him.", "improvise": "The musician had to improvise a new melody.", "maneuvers": "The pilot performed complex maneuvers.", "negotiate": "The two sides tried to negotiate a deal.", "privilege": "Voting is both a right and a privilege.", "reinforce": "We need to reinforce the bridge supports.", "stimulate": "Games can stimulate creative thinking.", "technique": "She practiced a new painting technique.", "versatile": "A Swiss army knife is a versatile tool."};
+var GEO_QUESTIONS={"2": {"1": [{"q": "How many continents are there?", "o": ["5", "6", "7", "8"], "a": 2}, {"q": "What is the biggest ocean?", "o": ["Atlantic", "Pacific", "Indian", "Arctic"], "a": 1}, {"q": "What do we call a large body of salt water?", "o": ["Lake", "River", "Ocean", "Pond"], "a": 2}, {"q": "Which direction does the sun rise?", "o": ["North", "South", "East", "West"], "a": 2}, {"q": "What shape is the Earth?", "o": ["Square", "Flat", "Sphere", "Triangle"], "a": 2}, {"q": "What do we call land surrounded by water?", "o": ["Mountain", "Island", "Valley", "Desert"], "a": 1}, {"q": "Where do polar bears live?", "o": ["Desert", "Jungle", "Arctic", "Ocean"], "a": 2}], "2": [{"q": "What country is the Statue of Liberty in?", "o": ["France", "Canada", "USA", "England"], "a": 2}, {"q": "What is the capital of the United States?", "o": ["New York", "Washington D.C.", "Los Angeles", "Chicago"], "a": 1}, {"q": "Which continent do we live on? (USA)", "o": ["Europe", "Asia", "North America", "Africa"], "a": 2}, {"q": "What are the two countries that border the USA?", "o": ["Mexico & Brazil", "Canada & Mexico", "Canada & Cuba", "England & Mexico"], "a": 1}, {"q": "Which ocean is on the east coast of the USA?", "o": ["Pacific", "Indian", "Arctic", "Atlantic"], "a": 3}, {"q": "Which ocean is on the west coast of the USA?", "o": ["Atlantic", "Pacific", "Indian", "Arctic"], "a": 1}, {"q": "What state is known for Hollywood?", "o": ["Texas", "Florida", "California", "New York"], "a": 2}], "3": [{"q": "Which continent is the largest?", "o": ["Africa", "Asia", "Europe", "N. America"], "a": 1}, {"q": "Which continent is the coldest?", "o": ["Europe", "Australia", "Antarctica", "Asia"], "a": 2}, {"q": "What is the imaginary line around Earth's middle?", "o": ["North Pole", "Equator", "Border", "Horizon"], "a": 1}, {"q": "Penguins live on which continent?", "o": ["N. America", "Africa", "Antarctica", "Europe"], "a": 2}, {"q": "What is the smallest continent?", "o": ["Europe", "Antarctica", "Australia", "S. America"], "a": 2}, {"q": "Which continent has the most countries?", "o": ["Asia", "Africa", "Europe", "S. America"], "a": 1}], "4": [{"q": "What famous landmark is in Paris?", "o": ["Big Ben", "Eiffel Tower", "Colosseum", "Pyramids"], "a": 1}, {"q": "The Great Wall is in which country?", "o": ["Japan", "India", "China", "Korea"], "a": 2}, {"q": "What is the longest river in the USA?", "o": ["Mississippi", "Ohio", "Colorado", "Hudson"], "a": 0}, {"q": "Mount Everest is on which continent?", "o": ["S. America", "Europe", "Africa", "Asia"], "a": 3}, {"q": "Which US state is the largest?", "o": ["Texas", "California", "Alaska", "Montana"], "a": 2}, {"q": "The Sahara Desert is on which continent?", "o": ["Asia", "Africa", "Australia", "S. America"], "a": 1}], "5": [{"q": "North, South, East, West are called?", "o": ["Seasons", "Compass directions", "Continents", "Hemispheres"], "a": 1}, {"q": "Northern and Southern halves of Earth?", "o": ["Continents", "Poles", "Hemispheres", "Equators"], "a": 2}, {"q": "Hawaii is surrounded by which ocean?", "o": ["Atlantic", "Arctic", "Indian", "Pacific"], "a": 3}, {"q": "What feature forms many US state borders?", "o": ["Mountains", "Deserts", "Rivers", "Forests"], "a": 2}, {"q": "What tool shows direction with a magnetic needle?", "o": ["Telescope", "Compass", "Thermometer", "Clock"], "a": 1}, {"q": "A map legend tells you what?", "o": ["The weather", "What symbols mean", "The time", "Temperature"], "a": 1}]}, "3": {"1": [{"q": "What is the capital of France?", "o": ["London", "Paris", "Rome", "Berlin"], "a": 1}, {"q": "Which country looks like a boot?", "o": ["Spain", "Greece", "Italy", "France"], "a": 2}, {"q": "On which continent is Brazil?", "o": ["Africa", "Europe", "N. America", "S. America"], "a": 3}, {"q": "What is the capital of England?", "o": ["Dublin", "London", "Paris", "Edinburgh"], "a": 1}, {"q": "Which country is famous for kangaroos?", "o": ["India", "Australia", "Canada", "S. Africa"], "a": 1}, {"q": "What country has the most people?", "o": ["USA", "Russia", "India", "China"], "a": 2}], "2": [{"q": "Which US state is farthest north?", "o": ["Washington", "Maine", "Minnesota", "Alaska"], "a": 3}, {"q": "Great Lakes border USA and?", "o": ["Mexico", "Canada", "Cuba", "Greenland"], "a": 1}, {"q": "Which state is the Sunshine State?", "o": ["California", "Texas", "Florida", "Hawaii"], "a": 2}, {"q": "What mountain range is on the US east coast?", "o": ["Rocky Mts", "Sierra Nevada", "Appalachian", "Cascades"], "a": 2}, {"q": "Which river borders USA and Mexico?", "o": ["Mississippi", "Rio Grande", "Colorado", "Missouri"], "a": 1}, {"q": "What is the capital of Texas?", "o": ["Houston", "Dallas", "Austin", "San Antonio"], "a": 2}], "3": [{"q": "The Amazon Rainforest is mostly in?", "o": ["Mexico", "Colombia", "Peru", "Brazil"], "a": 3}, {"q": "What is the largest country by area?", "o": ["China", "USA", "Canada", "Russia"], "a": 3}, {"q": "Which ocean is between Africa and Australia?", "o": ["Pacific", "Atlantic", "Indian", "Arctic"], "a": 2}, {"q": "What is the driest continent?", "o": ["Africa", "Australia", "Antarctica", "Asia"], "a": 2}, {"q": "The Nile River flows through which continent?", "o": ["Asia", "S. America", "Europe", "Africa"], "a": 3}, {"q": "Which continent has no permanent population?", "o": ["Australia", "Antarctica", "S. America", "Europe"], "a": 1}], "4": [{"q": "Tallest mountain in North America?", "o": ["Mt. Rainier", "Mt. Whitney", "Denali", "Mt. Elbert"], "a": 2}, {"q": "The Pyramids of Giza are in?", "o": ["Iraq", "Egypt", "Morocco", "Turkey"], "a": 1}, {"q": "What country is known for the Taj Mahal?", "o": ["China", "Japan", "India", "Pakistan"], "a": 2}, {"q": "Which landmark has 4 presidents' faces?", "o": ["Statue of Liberty", "Mt. Rushmore", "Grand Canyon", "Lincoln Memorial"], "a": 1}, {"q": "Great Barrier Reef is near which country?", "o": ["Brazil", "Thailand", "Australia", "S. Africa"], "a": 2}, {"q": "What canal connects Atlantic and Pacific?", "o": ["Suez Canal", "Panama Canal", "Erie Canal", "Grand Canal"], "a": 1}], "5": [{"q": "Lines of longitude run which direction?", "o": ["East to West", "North to South", "Diagonal", "In circles"], "a": 1}, {"q": "What is a delta?", "o": ["Mountain peak", "Land at a river's mouth", "Deep valley", "Type of island"], "a": 1}, {"q": "Which country has the longest coastline?", "o": ["Australia", "Russia", "USA", "Canada"], "a": 3}, {"q": "A peninsula has water on how many sides?", "o": ["One", "Two", "Three", "Four"], "a": 2}, {"q": "What causes the seasons?", "o": ["Distance from sun", "Earth's tilt", "The moon", "Ocean currents"], "a": 1}, {"q": "Prime Meridian passes through which city?", "o": ["Paris", "New York", "London", "Rome"], "a": 2}]}, "4": {"1": [{"q": "What is the capital of Japan?", "o": ["Beijing", "Seoul", "Tokyo", "Osaka"], "a": 2}, {"q": "Which is both a continent and a country?", "o": ["Greenland", "Australia", "India", "Brazil"], "a": 1}, {"q": "What is the capital of Canada?", "o": ["Toronto", "Vancouver", "Montreal", "Ottawa"], "a": 3}, {"q": "Which European country is shaped like a boot?", "o": ["Spain", "Italy", "Greece", "Portugal"], "a": 1}, {"q": "In which country is Cairo?", "o": ["Morocco", "Egypt", "Libya", "Sudan"], "a": 1}, {"q": "What is the capital of Germany?", "o": ["Munich", "Hamburg", "Berlin", "Frankfurt"], "a": 2}, {"q": "Largest South American country?", "o": ["Argentina", "Colombia", "Peru", "Brazil"], "a": 3}], "2": [{"q": "What is the capital of Australia?", "o": ["Sydney", "Melbourne", "Canberra", "Perth"], "a": 2}, {"q": "What is the capital of China?", "o": ["Shanghai", "Beijing", "Hong Kong", "Guangzhou"], "a": 1}, {"q": "What is the capital of Mexico?", "o": ["Cancun", "Guadalajara", "Mexico City", "Monterrey"], "a": 2}, {"q": "What is the capital of Brazil?", "o": ["Rio de Janeiro", "S\u00e3o Paulo", "Bras\u00edlia", "Salvador"], "a": 2}, {"q": "What is the capital of India?", "o": ["Mumbai", "New Delhi", "Kolkata", "Bangalore"], "a": 1}, {"q": "What is the capital of Russia?", "o": ["Moscow", "St. Petersburg", "Kiev", "Minsk"], "a": 0}, {"q": "What is the capital of Spain?", "o": ["Barcelona", "Madrid", "Seville", "Valencia"], "a": 1}], "3": [{"q": "Longest river in the world?", "o": ["Amazon", "Mississippi", "Nile", "Yangtze"], "a": 2}, {"q": "Largest desert in the world?", "o": ["Sahara", "Gobi", "Antarctic", "Arabian"], "a": 2}, {"q": "Deepest ocean trench?", "o": ["Puerto Rico", "Mariana", "Java", "Tonga"], "a": 1}, {"q": "Rocky Mountains are on which continent?", "o": ["Europe", "Asia", "S. America", "N. America"], "a": 3}, {"q": "Which river flows through London?", "o": ["Seine", "Rhine", "Thames", "Danube"], "a": 2}, {"q": "What mountains separate Europe from Asia?", "o": ["Alps", "Andes", "Himalayas", "Urals"], "a": 3}, {"q": "Dead Sea borders Israel and?", "o": ["Egypt", "Jordan", "Syria", "Lebanon"], "a": 1}], "4": [{"q": "What climate zone is near the equator?", "o": ["Arctic", "Tropical", "Temperate", "Polar"], "a": 1}, {"q": "What biome has the most biodiversity?", "o": ["Desert", "Tundra", "Rainforest", "Grassland"], "a": 2}, {"q": "Tundra is found near which part of Earth?", "o": ["Equator", "Tropics", "Poles", "Temperate"], "a": 2}, {"q": "What forest loses leaves in fall?", "o": ["Tropical", "Coniferous", "Deciduous", "Rainforest"], "a": 2}, {"q": "Which continent has the largest rainforest?", "o": ["Africa", "Asia", "S. America", "N. America"], "a": 2}, {"q": "Sahara Desert has what climate?", "o": ["Tropical", "Arid", "Temperate", "Polar"], "a": 1}], "5": [{"q": "What strait separates Asia from N. America?", "o": ["Gibraltar", "Bering", "Magellan", "Hormuz"], "a": 1}, {"q": "Which sea is the saltiest?", "o": ["Red Sea", "Dead Sea", "Black Sea", "Caspian"], "a": 1}, {"q": "What is the Ring of Fire?", "o": ["A desert", "Zone of volcanoes", "Tropical storm", "Ocean current"], "a": 1}, {"q": "What % of Earth's surface is water?", "o": ["50%", "60%", "70%", "80%"], "a": 2}, {"q": "Country with the most time zones?", "o": ["Russia", "USA", "China", "France"], "a": 3}, {"q": "What is an archipelago?", "o": ["Mountain range", "Chain of islands", "Large lake", "Deep valley"], "a": 1}]}, "5": {"1": [{"q": "Capital of South Korea?", "o": ["Busan", "Seoul", "Pyongyang", "Tokyo"], "a": 1}, {"q": "Which African country was never colonized?", "o": ["Nigeria", "Kenya", "Ethiopia", "Ghana"], "a": 2}, {"q": "Smallest country in the world?", "o": ["Monaco", "Malta", "Vatican City", "San Marino"], "a": 2}, {"q": "Country with the most natural lakes?", "o": ["Russia", "USA", "Canada", "Finland"], "a": 2}, {"q": "Land of the Rising Sun?", "o": ["China", "Thailand", "Japan", "Vietnam"], "a": 2}, {"q": "Turkey is on which continent(s)?", "o": ["Asia only", "Europe only", "Asia and Europe", "Africa"], "a": 2}], "2": [{"q": "Capital of Egypt?", "o": ["Alexandria", "Cairo", "Luxor", "Giza"], "a": 1}, {"q": "Capital of Argentina?", "o": ["Santiago", "Lima", "Buenos Aires", "Bogot\u00e1"], "a": 2}, {"q": "Capital of Thailand?", "o": ["Bangkok", "Hanoi", "Manila", "Jakarta"], "a": 0}, {"q": "Capital of Kenya?", "o": ["Lagos", "Nairobi", "Addis Ababa", "Kampala"], "a": 1}, {"q": "Capital of Turkey?", "o": ["Istanbul", "Ankara", "Izmir", "Antalya"], "a": 1}, {"q": "Capital of New Zealand?", "o": ["Auckland", "Christchurch", "Wellington", "Queenstown"], "a": 2}], "3": [{"q": "Longest mountain range? Where?", "o": ["Asia", "N. America", "Europe", "S. America"], "a": 3}, {"q": "Largest lake in Africa?", "o": ["Lake Chad", "Lake Victoria", "Tanganyika", "Malawi"], "a": 1}, {"q": "Amazon River flows through how many countries?", "o": ["3", "5", "7", "9"], "a": 3}, {"q": "Highest waterfall in the world?", "o": ["Niagara", "Angel Falls", "Victoria Falls", "Iguazu"], "a": 1}, {"q": "Gobi Desert is in which two countries?", "o": ["Iran & Iraq", "China & Mongolia", "India & Pakistan", "Egypt & Libya"], "a": 1}, {"q": "Largest island in the world?", "o": ["Madagascar", "Borneo", "Greenland", "New Guinea"], "a": 2}], "4": [{"q": "Most widely spoken first language?", "o": ["English", "Spanish", "Mandarin Chinese", "Hindi"], "a": 2}, {"q": "Which country produces the most coffee?", "o": ["Colombia", "Ethiopia", "Brazil", "Vietnam"], "a": 2}, {"q": "Most visited country in the world?", "o": ["USA", "Spain", "France", "Italy"], "a": 2}, {"q": "Silk Road connected China to?", "o": ["Africa", "Americas", "Europe", "Australia"], "a": 2}, {"q": "What currency is used in Japan?", "o": ["Won", "Yuan", "Yen", "Baht"], "a": 2}, {"q": "Which country is famous for fjords?", "o": ["Sweden", "Norway", "Finland", "Iceland"], "a": 1}], "5": [{"q": "What is the International Date Line?", "o": ["Equator", "Prime Meridian", "Line at 180\u00b0 longitude", "Tropic of Cancer"], "a": 2}, {"q": "What causes ocean tides?", "o": ["Wind", "Earth's rotation", "Moon's gravity", "Earthquakes"], "a": 2}, {"q": "Difference between weather and climate?", "o": ["Same thing", "Climate=daily", "Weather=daily, climate=long-term", "Climate=wind only"], "a": 2}, {"q": "What are tectonic plates?", "o": ["Ocean floors", "Pieces of Earth's crust", "Cloud formations", "Mountain ranges"], "a": 1}, {"q": "Gulf Stream is a type of?", "o": ["Wind pattern", "Ocean current", "River system", "Tectonic plate"], "a": 1}, {"q": "What is erosion?", "o": ["Volcanic eruption", "Wearing away of land", "Growth of mountains", "Flooding"], "a": 1}]}};
+var GAMES=['math','spelling','scramble','geography'];
+var GICONS={math:'🔢',spelling:'📖',scramble:'🔀',geography:'🌍'};
+var GLABELS={math:'Math',spelling:'Spelling',scramble:'Scramble',geography:'Geography'};
+var CORRECT_TO_LEVEL_UP=4,WRONG_TO_LEVEL_DOWN=3;
+var CORRECT_MSGS=["Awesome! 🎉","You got it! ⭐","Amazing! 🚀","Brilliant! 💡","Super star! 🌟","Nailed it! 🎯","Fantastic! 🎊","Way to go! 🏆","Perfect! 💎","Outstanding! 🔥","You rock! 🎸","Incredible! 🦄"];
+var WRONG_MSGS=["Almost! 💪","So close! 🌈","Not quite! 🍀","Keep trying! 📚"];
+var ACHIEVEMENTS=[
+  {id:'first_correct',icon:'⭐',name:'First Star',desc:'Get first correct answer'},
+  {id:'streak_5',icon:'🔥',name:'On Fire',desc:'5 answer streak'},
+  {id:'streak_10',icon:'💥',name:'Unstoppable',desc:'10 answer streak'},
+  {id:'perfect_10',icon:'💎',name:'Perfect 10',desc:'10/10 no mistakes'},
+  {id:'level_3',icon:'🚀',name:'Rocket',desc:'Reach level 3'},
+  {id:'level_5',icon:'👑',name:'Champion',desc:'Reach max level'},
+  {id:'math_master',icon:'🧮',name:'Math Master',desc:'90%+ in Math (10+ Qs)'},
+  {id:'spelling_bee',icon:'🐝',name:'Spelling Bee',desc:'90%+ in Spelling (10+ Qs)'},
+  {id:'word_wizard',icon:'🧙',name:'Word Wizard',desc:'90%+ in Scramble (10+ Qs)'},
+  {id:'explorer',icon:'🗺️',name:'Explorer',desc:'90%+ in Geography (10+ Qs)'},
+  {id:'all_rounder',icon:'🌟',name:'All Rounder',desc:'Play all 4 games'},
+  {id:'goat',icon:'🐐',name:'The GOAT',desc:'Reach level 5 in any game'},
+  {id:'speed_demon',icon:'⚡',name:'Speed Demon',desc:'15+ correct in 60s blitz'},
+  {id:'daily_3',icon:'📅',name:'3-Day Streak',desc:'Practice 3 days in a row'},
+  {id:'daily_7',icon:'🗓️',name:'Week Warrior',desc:'Practice 7 days in a row'},
+];
 
+// ==================== STATE ====================
+var state={playerName:'',subject:null,grade:null,difficulty:1,voiceChoice:'us-woman',mode:'practice',problem:null,streak:0,bestStreak:0,totalCorrect:0,totalAttempted:0,consecutiveCorrect:0,consecutiveWrong:0,usedWords:{},usedGeo:{},geoLocked:false,timerInterval:null,timerSeconds:60};
 
-    const SENTENCES = {
-      "cat": "The cat sat on the warm rug.",
-      "dog": "My dog loves to play fetch.",
-      "run": "I like to run in the park.",
-      "big": "That is a really big tree.",
-      "sun": "The sun is bright today.",
-      "hat": "She wore a red hat outside.",
-      "bed": "I made my bed this morning.",
-      "map": "We used a map on our trip.",
-      "cup": "Please fill my cup with water.",
-      "leg": "The dog hurt its back leg.",
-      "pig": "The pig rolled in the mud.",
-      "top": "He climbed to the top of the hill.",
-      "red": "My favorite color is red.",
-      "box": "Put the toys in the box.",
-      "fun": "Playing outside is so much fun.",
-      "jump": "Watch me jump over the puddle.",
-      "play": "Let's play a game together.",
-      "stop": "You must stop at the red light.",
-      "fish": "We caught a big fish at the lake.",
-      "tree": "A bird built a nest in the tree.",
-      "frog": "The green frog hopped away.",
-      "milk": "I drink milk with my cereal.",
-      "duck": "The duck swam across the pond.",
-      "wish": "I wish I could fly like a bird.",
-      "king": "The king sat on his golden throne.",
-      "drum": "He played the drum in the band.",
-      "ship": "The ship sailed across the ocean.",
-      "nest": "The bird sat in its cozy nest.",
-      "pink": "She painted her room pink.",
-      "lamp": "Turn on the lamp so we can read.",
-      "happy": "I feel happy on sunny days.",
-      "green": "The grass is very green today.",
-      "sleep": "I need eight hours of sleep.",
-      "black": "The black cat crossed the road.",
-      "brown": "He has brown eyes like his mom.",
-      "plant": "We will plant seeds in the garden.",
-      "three": "I have three best friends at school.",
-      "white": "Fresh snow is bright white.",
-      "small": "The kitten is very small.",
-      "bring": "Please bring your backpack to class.",
-      "drink": "I need a drink of cold water.",
-      "smile": "Her smile made everyone feel better.",
-      "float": "The balloon will float up high.",
-      "chair": "Please sit in your chair quietly.",
-      "stone": "He skipped a stone across the water.",
-      "friend": "My best friend lives next door.",
-      "should": "You should always be kind to others.",
-      "please": "May I please have some more?",
-      "school": "I walk to school every morning.",
-      "people": "Many people came to the fair.",
-      "around": "The dog ran around the yard.",
-      "before": "Wash your hands before dinner.",
-      "twelve": "There are twelve months in a year.",
-      "change": "The leaves change color in fall.",
-      "follow": "Please follow me to the library.",
-      "pretty": "The garden looks so pretty in spring.",
-      "always": "She always does her best work.",
-      "animal": "The zoo has every kind of animal.",
-      "father": "My father taught me to ride a bike.",
-      "mother": "My mother makes the best pancakes.",
-      "because": "I smiled because I was happy.",
-      "through": "We walked through the tunnel.",
-      "thought": "I thought the movie was great.",
-      "brother": "My brother is older than me.",
-      "another": "May I have another cookie please?",
-      "morning": "The birds sing every morning.",
-      "nothing": "There is nothing in the empty box.",
-      "tonight": "We are having pizza tonight.",
-      "outside": "Let's go play outside after lunch.",
-      "picture": "She drew a beautiful picture.",
-      "between": "The park is between two buildings.",
-      "hundred": "There are one hundred pennies in a dollar.",
-      "kitchen": "Mom is cooking in the kitchen.",
-      "blanket": "The soft blanket kept me warm.",
-      "mittens": "Wear your mittens when it snows.",
-      "lake": "We swam in the lake all summer.",
-      "home": "There is no place like home.",
-      "time": "What time does the movie start?",
-      "five": "I have five fingers on each hand.",
-      "give": "I will give you my extra pencil.",
-      "come": "Please come to my birthday party.",
-      "some": "Would you like some fruit?",
-      "bone": "The dog buried its bone in the yard.",
-      "note": "She left a note on the fridge.",
-      "fire": "We roasted marshmallows over the fire.",
-      "more": "I would like more time to finish.",
-      "side": "Walk on the right side of the hall.",
-      "wide": "The river was very wide.",
-      "hope": "I hope we win the game today.",
-      "ride": "Let's ride our bikes to the park.",
-      "begin": "Let's begin the lesson now.",
-      "study": "I need to study for my test.",
-      "water": "Drink plenty of water every day.",
-      "never": "I have never seen a shooting star.",
-      "after": "We have recess after lunch.",
-      "story": "Grandma told us a funny story.",
-      "every": "She practices piano every day.",
-      "again": "Can you say that again please?",
-      "world": "There are many countries in the world.",
-      "write": "Please write your name on the paper.",
-      "start": "The race will start at noon.",
-      "laugh": "That joke made everyone laugh.",
-      "power": "The storm knocked out the power.",
-      "guess": "Can you guess what I am thinking?",
-      "quiet": "The library is a quiet place.",
-      "beauty": "The sunset was a thing of beauty.",
-      "center": "The fountain is in the center of town.",
-      "simple": "The recipe is quick and simple.",
-      "circle": "The children sat in a circle.",
-      "listen": "Please listen carefully to the directions.",
-      "castle": "The old castle sits on a hill.",
-      "garden": "We planted tomatoes in the garden.",
-      "orange": "I peeled an orange for my snack.",
-      "planet": "Earth is the third planet from the sun.",
-      "silver": "She wore a silver necklace.",
-      "street": "Look both ways before crossing the street.",
-      "bridge": "The bridge goes over the river.",
-      "finger": "She pointed her finger at the map.",
-      "basket": "The basket was full of apples.",
-      "ladder": "He climbed up the tall ladder.",
-      "trouble": "Lying will only get you in trouble.",
-      "country": "What country would you like to visit?",
-      "weather": "The weather is perfect for a picnic.",
-      "journey": "The journey to grandma's takes two hours.",
-      "already": "I have already finished my homework.",
-      "evening": "Stars appear in the evening sky.",
-      "against": "He leaned against the old fence.",
-      "certain": "I am certain the answer is correct.",
-      "million": "A million is a very large number.",
-      "special": "Today is a very special day.",
-      "library": "I returned my books to the library.",
-      "mystery": "The missing cat was a real mystery.",
-      "harvest": "Farmers harvest crops in the fall.",
-      "balance": "She kept her balance on the beam.",
-      "captain": "The captain steered the ship safely.",
-      "calendar": "Mark the date on your calendar.",
-      "elephant": "The elephant is the largest land animal.",
-      "favorite": "Pizza is my favorite food.",
-      "surprise": "The party was a big surprise.",
-      "sandwich": "I packed a sandwich for lunch.",
-      "dinosaur": "The dinosaur exhibit was amazing.",
-      "sentence": "Please write a complete sentence.",
-      "treasure": "The pirates searched for buried treasure.",
-      "question": "That is an excellent question.",
-      "engineer": "The engineer designed a new bridge.",
-      "alphabet": "There are twenty-six letters in the alphabet.",
-      "document": "Save the document on your computer.",
-      "umbrella": "Bring an umbrella in case it rains.",
-      "birthday": "My birthday is in September.",
-      "complete": "Did you complete your assignment?",
-      "brave": "The brave firefighter saved the family.",
-      "grain": "Bread is made from grain.",
-      "youth": "She volunteered at the youth center.",
-      "chief": "The chief made an important decision.",
-      "sworn": "He was sworn in as class president.",
-      "claim": "Nobody could claim the lost wallet.",
-      "drift": "We watched the clouds drift across the sky.",
-      "flame": "The candle flame flickered in the wind.",
-      "globe": "She spun the globe to find Japan.",
-      "marsh": "Frogs and herons live in the marsh.",
-      "nerve": "It took a lot of nerve to speak up.",
-      "pride": "She felt great pride in her work.",
-      "reign": "The queen had a long and peaceful reign.",
-      "sweep": "Please sweep the kitchen floor.",
-      "vault": "The gymnast performed an amazing vault.",
-      "breeze": "A cool breeze blew through the window.",
-      "canyon": "The Grand Canyon is incredibly deep.",
-      "divide": "Let's divide the pizza into equal slices.",
-      "falcon": "The falcon is one of the fastest birds.",
-      "gadget": "That new gadget is really useful.",
-      "impact": "The meteor made a huge impact crater.",
-      "legend": "She told us the legend of the lost city.",
-      "magnet": "The magnet stuck to the refrigerator.",
-      "narrow": "The path through the woods was narrow.",
-      "orphan": "The kind family adopted the orphan.",
-      "pastel": "She drew with pastel colors.",
-      "rescue": "The team worked hard to rescue the hikers.",
-      "salmon": "The salmon swam upstream to lay eggs.",
-      "target": "He hit the target with his first arrow.",
-      "vacuum": "Please vacuum the living room carpet.",
-      "achieve": "You can achieve anything with hard work.",
-      "bargain": "That shirt was a real bargain.",
-      "compete": "The two teams will compete on Saturday.",
-      "decimal": "Move the decimal point two places.",
-      "exhaust": "The long hike will exhaust even the fittest.",
-      "fiction": "My favorite genre is science fiction.",
-      "grizzly": "The grizzly bear fished in the stream.",
-      "horizon": "The sun dipped below the horizon.",
-      "inquiry": "The scientist began an inquiry into the cause.",
-      "lantern": "The old lantern lit up the dark cave.",
-      "mineral": "Quartz is a very common mineral.",
-      "nucleus": "The nucleus is the center of a cell.",
-      "opinion": "Everyone is entitled to their own opinion.",
-      "portion": "She ate a small portion of the pie.",
-      "reflect": "The mirror will reflect the light.",
-      "abundant": "The garden had an abundant harvest.",
-      "collapse": "The old barn started to collapse.",
-      "distance": "The distance to the moon is very far.",
-      "evidence": "The detective gathered all the evidence.",
-      "fragment": "She found a fragment of the old pot.",
-      "generate": "Wind turbines generate electricity.",
-      "monopoly": "We played a long game of monopoly.",
-      "navigate": "Sailors use stars to navigate at sea.",
-      "opposite": "Hot is the opposite of cold.",
-      "passport": "You need a passport to travel abroad.",
-      "quantity": "We ordered a large quantity of supplies.",
-      "recharge": "I need to recharge my phone battery.",
-      "syllable": "The word banana has three syllables.",
-      "triangle": "A triangle has exactly three sides.",
-      "universe": "The universe contains billions of stars.",
-      "advantage": "Studying gave her an advantage on the test.",
-      "brilliant": "She had a brilliant idea for the project.",
-      "character": "The main character in the book is brave.",
-      "determine": "Scientists work to determine the facts.",
-      "education": "A good education opens many doors.",
-      "frequency": "The frequency of the sound was very high.",
-      "guarantee": "I guarantee you will enjoy this book.",
-      "imaginary": "The child played with an imaginary friend.",
-      "knowledge": "Reading increases your knowledge.",
-      "machinery": "The factory uses heavy machinery.",
-      "necessary": "It is necessary to wear a seatbelt.",
-      "operation": "The doctor performed a successful operation.",
-      "passenger": "Each passenger must have a ticket.",
-      "recognize": "I didn't recognize her with short hair.",
-      "structure": "The structure of the building is very strong.",
-      "adept": "She is quite adept at solving puzzles.",
-      "clash": "The two ideas seemed to clash.",
-      "dwell": "They dwell in a cottage by the sea.",
-      "forge": "The blacksmith used the forge to shape metal.",
-      "guilt": "He felt guilt for breaking the vase.",
-      "haven": "The library was a quiet haven for readers.",
-      "knack": "She has a real knack for drawing.",
-      "moral": "The moral of the story is to be honest.",
-      "plead": "He had to plead his case before the judge.",
-      "quota": "The factory met its production quota.",
-      "realm": "The kingdom was the largest realm in the land.",
-      "swear": "Do you swear to tell the truth?",
-      "trait": "Kindness is a wonderful trait to have.",
-      "vigor": "She tackled the project with great vigor.",
-      "yield": "The farm will yield a good crop this year.",
-      "absorb": "Sponges absorb water very quickly.",
-      "census": "The census counts everyone in the country.",
-      "diesel": "The truck runs on diesel fuel.",
-      "embark": "We will embark on our journey tomorrow.",
-      "fiesta": "The town held a colorful fiesta.",
-      "gravel": "The driveway was covered with gravel.",
-      "ignite": "A single spark can ignite a fire.",
-      "jostle": "People jostle for space on the crowded bus.",
-      "kernel": "Each kernel of corn popped perfectly.",
-      "locker": "I put my books in my locker.",
-      "muster": "She tried to muster the courage to speak.",
-      "novice": "The novice skier took a beginner lesson.",
-      "phenom": "The young player was a true phenom.",
-      "summit": "The hikers reached the mountain summit.",
-      "whimsy": "The garden was full of whimsy and color.",
-      "acquire": "She worked hard to acquire new skills.",
-      "crusade": "The school led a crusade against littering.",
-      "descent": "The plane began its descent to the airport.",
-      "exhibit": "The museum opened a new dinosaur exhibit.",
-      "genuine": "His apology seemed genuine and heartfelt.",
-      "loyalty": "The dog showed great loyalty to its owner.",
-      "optimum": "The optimum temperature for sleep is cool.",
-      "perplex": "The riddle continued to perplex everyone.",
-      "rapport": "The teacher built a strong rapport with students.",
-      "stadium": "The stadium was packed with cheering fans.",
-      "tribute": "The concert was a tribute to the musician.",
-      "venture": "Starting a business is a bold venture.",
-      "warrant": "The evidence did not warrant further action.",
-      "analyze": "Scientists analyze data from experiments.",
-      "broaden": "Travel can broaden your understanding of the world.",
-      "altitude": "The plane flew at a high altitude.",
-      "boundary": "The fence marks the boundary of our yard.",
-      "campaign": "The candidate ran an exciting campaign.",
-      "domestic": "Cats are popular domestic animals.",
-      "exchange": "Students in the exchange program visit other countries.",
-      "flourish": "Plants flourish with sunlight and water.",
-      "hardship": "The pioneers faced great hardship.",
-      "invasion": "The invasion of ants ruined our picnic.",
-      "judgment": "She showed good judgment in her decision.",
-      "latitude": "Lines of latitude run east to west on a map.",
-      "merchant": "The merchant sold spices from faraway lands.",
-      "nuisance": "The buzzing fly was a real nuisance.",
-      "peculiar": "There was a peculiar smell in the kitchen.",
-      "radiance": "The radiance of the sunset was breathtaking.",
-      "sequence": "Arrange the numbers in the correct sequence.",
-      "abolition": "The abolition of slavery was a turning point.",
-      "chameleon": "A chameleon can change its color.",
-      "deception": "The magician used clever deception.",
-      "elaborate": "The artist created an elaborate mural.",
-      "fascinate": "Outer space continues to fascinate us.",
-      "hypnotize": "The swinging watch seemed to hypnotize him.",
-      "improvise": "The musician had to improvise a new melody.",
-      "maneuvers": "The pilot performed complex maneuvers.",
-      "negotiate": "The two sides tried to negotiate a deal.",
-      "privilege": "Voting is both a right and a privilege.",
-      "reinforce": "We need to reinforce the bridge supports.",
-      "stimulate": "Games can stimulate creative thinking.",
-      "technique": "She practiced a new painting technique.",
-      "versatile": "A Swiss army knife is a versatile tool.",
-    };
+// ==================== HELPERS ====================
+function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function today(){return new Date().toISOString().split('T')[0]}
 
-    const GEO_QUESTIONS = {
-      "2": {
-            "1": [
-                  {
-                        "q": "How many continents are there?",
-                        "opts": [
-                              "5",
-                              "6",
-                              "7",
-                              "8"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the biggest ocean?",
-                        "opts": [
-                              "Atlantic",
-                              "Pacific",
-                              "Indian",
-                              "Arctic"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What do we call a large body of salt water?",
-                        "opts": [
-                              "Lake",
-                              "River",
-                              "Ocean",
-                              "Pond"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which direction does the sun rise?",
-                        "opts": [
-                              "North",
-                              "South",
-                              "East",
-                              "West"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What shape is the Earth?",
-                        "opts": [
-                              "Square",
-                              "Flat",
-                              "Sphere",
-                              "Triangle"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What do we call a piece of land surrounded by water?",
-                        "opts": [
-                              "Mountain",
-                              "Island",
-                              "Valley",
-                              "Desert"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Where do polar bears live?",
-                        "opts": [
-                              "Desert",
-                              "Jungle",
-                              "Arctic",
-                              "Ocean"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "2": [
-                  {
-                        "q": "What country is the Statue of Liberty in?",
-                        "opts": [
-                              "France",
-                              "Canada",
-                              "USA",
-                              "England"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the capital of the United States?",
-                        "opts": [
-                              "New York",
-                              "Washington D.C.",
-                              "Los Angeles",
-                              "Chicago"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which continent do we live on? (USA)",
-                        "opts": [
-                              "Europe",
-                              "Asia",
-                              "North America",
-                              "Africa"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What are the two countries that border the USA?",
-                        "opts": [
-                              "Mexico & Brazil",
-                              "Canada & Mexico",
-                              "Canada & Cuba",
-                              "England & Mexico"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which ocean is on the east coast of the USA?",
-                        "opts": [
-                              "Pacific",
-                              "Indian",
-                              "Arctic",
-                              "Atlantic"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which ocean is on the west coast of the USA?",
-                        "opts": [
-                              "Atlantic",
-                              "Pacific",
-                              "Indian",
-                              "Arctic"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What state is known for Hollywood?",
-                        "opts": [
-                              "Texas",
-                              "Florida",
-                              "California",
-                              "New York"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "3": [
-                  {
-                        "q": "Which continent is the largest?",
-                        "opts": [
-                              "Africa",
-                              "Asia",
-                              "Europe",
-                              "North America"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which continent is the coldest?",
-                        "opts": [
-                              "Europe",
-                              "Australia",
-                              "Antarctica",
-                              "Asia"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the name of the imaginary line around the middle of Earth?",
-                        "opts": [
-                              "North Pole",
-                              "Equator",
-                              "Border",
-                              "Horizon"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Penguins live on which continent?",
-                        "opts": [
-                              "North America",
-                              "Africa",
-                              "Antarctica",
-                              "Europe"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the smallest continent?",
-                        "opts": [
-                              "Europe",
-                              "Antarctica",
-                              "Australia",
-                              "South America"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which continent has the most countries?",
-                        "opts": [
-                              "Asia",
-                              "Africa",
-                              "Europe",
-                              "South America"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "4": [
-                  {
-                        "q": "What famous landmark is in Paris, France?",
-                        "opts": [
-                              "Big Ben",
-                              "Eiffel Tower",
-                              "Colosseum",
-                              "Pyramids"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Great Wall is in which country?",
-                        "opts": [
-                              "Japan",
-                              "India",
-                              "China",
-                              "Korea"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the longest river in the USA?",
-                        "opts": [
-                              "Mississippi",
-                              "Ohio",
-                              "Colorado",
-                              "Hudson"
-                        ],
-                        "a": 0
-                  },
-                  {
-                        "q": "Mount Everest is on which continent?",
-                        "opts": [
-                              "South America",
-                              "Europe",
-                              "Africa",
-                              "Asia"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which state is the largest in the USA?",
-                        "opts": [
-                              "Texas",
-                              "California",
-                              "Alaska",
-                              "Montana"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "The Sahara Desert is on which continent?",
-                        "opts": [
-                              "Asia",
-                              "Africa",
-                              "Australia",
-                              "South America"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "5": [
-                  {
-                        "q": "North, South, East, and West are called what?",
-                        "opts": [
-                              "Seasons",
-                              "Compass directions",
-                              "Continents",
-                              "Hemispheres"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Northern and Southern halves of Earth are called what?",
-                        "opts": [
-                              "Continents",
-                              "Poles",
-                              "Hemispheres",
-                              "Equators"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Hawaii is surrounded by which ocean?",
-                        "opts": [
-                              "Atlantic",
-                              "Arctic",
-                              "Indian",
-                              "Pacific"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What natural feature forms the border between many US states?",
-                        "opts": [
-                              "Mountains",
-                              "Deserts",
-                              "Rivers",
-                              "Forests"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What tool shows direction using a magnetic needle?",
-                        "opts": [
-                              "Telescope",
-                              "Compass",
-                              "Thermometer",
-                              "Clock"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "A map's legend tells you what?",
-                        "opts": [
-                              "The weather",
-                              "What the symbols mean",
-                              "The time",
-                              "The temperature"
-                        ],
-                        "a": 1
-                  }
-            ]
-      },
-      "3": {
-            "1": [
-                  {
-                        "q": "What is the capital of France?",
-                        "opts": [
-                              "London",
-                              "Paris",
-                              "Rome",
-                              "Berlin"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which country looks like a boot?",
-                        "opts": [
-                              "Spain",
-                              "Greece",
-                              "Italy",
-                              "France"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "On which continent is Brazil?",
-                        "opts": [
-                              "Africa",
-                              "Europe",
-                              "North America",
-                              "South America"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What is the capital of England?",
-                        "opts": [
-                              "Dublin",
-                              "London",
-                              "Paris",
-                              "Edinburgh"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which country is famous for kangaroos?",
-                        "opts": [
-                              "India",
-                              "Australia",
-                              "Canada",
-                              "South Africa"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What country has the most people in the world?",
-                        "opts": [
-                              "USA",
-                              "Russia",
-                              "India",
-                              "China"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "2": [
-                  {
-                        "q": "Which US state is farthest north?",
-                        "opts": [
-                              "Washington",
-                              "Maine",
-                              "Minnesota",
-                              "Alaska"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "The Great Lakes border the USA and which country?",
-                        "opts": [
-                              "Mexico",
-                              "Canada",
-                              "Cuba",
-                              "Greenland"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which US state is known as the Sunshine State?",
-                        "opts": [
-                              "California",
-                              "Texas",
-                              "Florida",
-                              "Hawaii"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What mountain range runs along the east coast of the USA?",
-                        "opts": [
-                              "Rocky Mountains",
-                              "Sierra Nevada",
-                              "Appalachian",
-                              "Cascade Range"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which river forms part of the border between the USA and Mexico?",
-                        "opts": [
-                              "Mississippi",
-                              "Rio Grande",
-                              "Colorado",
-                              "Missouri"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Texas?",
-                        "opts": [
-                              "Houston",
-                              "Dallas",
-                              "Austin",
-                              "San Antonio"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "3": [
-                  {
-                        "q": "The Amazon Rainforest is mostly in which country?",
-                        "opts": [
-                              "Mexico",
-                              "Colombia",
-                              "Peru",
-                              "Brazil"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What is the largest country by area?",
-                        "opts": [
-                              "China",
-                              "USA",
-                              "Canada",
-                              "Russia"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which ocean is between Africa and Australia?",
-                        "opts": [
-                              "Pacific",
-                              "Atlantic",
-                              "Indian",
-                              "Arctic"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the driest continent on Earth?",
-                        "opts": [
-                              "Africa",
-                              "Australia",
-                              "Antarctica",
-                              "Asia"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "The Nile River flows through which continent?",
-                        "opts": [
-                              "Asia",
-                              "South America",
-                              "Europe",
-                              "Africa"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which continent has no permanent population?",
-                        "opts": [
-                              "Australia",
-                              "Antarctica",
-                              "South America",
-                              "Europe"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "4": [
-                  {
-                        "q": "What is the tallest mountain in North America?",
-                        "opts": [
-                              "Mt. Rainier",
-                              "Mt. Whitney",
-                              "Denali",
-                              "Mt. Elbert"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "The Pyramids of Giza are in which country?",
-                        "opts": [
-                              "Iraq",
-                              "Egypt",
-                              "Morocco",
-                              "Turkey"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What country is known for the Taj Mahal?",
-                        "opts": [
-                              "China",
-                              "Japan",
-                              "India",
-                              "Pakistan"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which US landmark has four presidents' faces carved in it?",
-                        "opts": [
-                              "Statue of Liberty",
-                              "Mount Rushmore",
-                              "Grand Canyon",
-                              "Lincoln Memorial"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Great Barrier Reef is near which country?",
-                        "opts": [
-                              "Brazil",
-                              "Thailand",
-                              "Australia",
-                              "South Africa"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What famous canal connects the Atlantic and Pacific Oceans?",
-                        "opts": [
-                              "Suez Canal",
-                              "Panama Canal",
-                              "Erie Canal",
-                              "Grand Canal"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "5": [
-                  {
-                        "q": "Lines of longitude run in which direction?",
-                        "opts": [
-                              "East to West",
-                              "North to South",
-                              "Diagonal",
-                              "In circles"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is a delta?",
-                        "opts": [
-                              "A mountain peak",
-                              "Land formed at a river's mouth",
-                              "A deep valley",
-                              "A type of island"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which country has the longest coastline?",
-                        "opts": [
-                              "Australia",
-                              "Russia",
-                              "USA",
-                              "Canada"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "A peninsula is land surrounded by water on how many sides?",
-                        "opts": [
-                              "One",
-                              "Two",
-                              "Three",
-                              "Four"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What causes the seasons?",
-                        "opts": [
-                              "Distance from sun",
-                              "Earth's tilt",
-                              "The moon",
-                              "Ocean currents"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Prime Meridian passes through which city?",
-                        "opts": [
-                              "Paris",
-                              "New York",
-                              "London",
-                              "Rome"
-                        ],
-                        "a": 2
-                  }
-            ]
-      },
-      "4": {
-            "1": [
-                  {
-                        "q": "What is the capital of Japan?",
-                        "opts": [
-                              "Beijing",
-                              "Seoul",
-                              "Tokyo",
-                              "Osaka"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which country is both a continent and a country?",
-                        "opts": [
-                              "Greenland",
-                              "Australia",
-                              "India",
-                              "Brazil"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Canada?",
-                        "opts": [
-                              "Toronto",
-                              "Vancouver",
-                              "Montreal",
-                              "Ottawa"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which European country is shaped like a boot?",
-                        "opts": [
-                              "Spain",
-                              "Italy",
-                              "Greece",
-                              "Portugal"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "In which country would you find the city of Cairo?",
-                        "opts": [
-                              "Morocco",
-                              "Egypt",
-                              "Libya",
-                              "Sudan"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Germany?",
-                        "opts": [
-                              "Munich",
-                              "Hamburg",
-                              "Berlin",
-                              "Frankfurt"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which South American country is the largest?",
-                        "opts": [
-                              "Argentina",
-                              "Colombia",
-                              "Peru",
-                              "Brazil"
-                        ],
-                        "a": 3
-                  }
-            ],
-            "2": [
-                  {
-                        "q": "What is the capital of Australia?",
-                        "opts": [
-                              "Sydney",
-                              "Melbourne",
-                              "Canberra",
-                              "Perth"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the capital of China?",
-                        "opts": [
-                              "Shanghai",
-                              "Beijing",
-                              "Hong Kong",
-                              "Guangzhou"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Mexico?",
-                        "opts": [
-                              "Cancun",
-                              "Guadalajara",
-                              "Mexico City",
-                              "Monterrey"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the capital of Brazil?",
-                        "opts": [
-                              "Rio de Janeiro",
-                              "S\u00e3o Paulo",
-                              "Bras\u00edlia",
-                              "Salvador"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the capital of India?",
-                        "opts": [
-                              "Mumbai",
-                              "New Delhi",
-                              "Kolkata",
-                              "Bangalore"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Russia?",
-                        "opts": [
-                              "Moscow",
-                              "St. Petersburg",
-                              "Kiev",
-                              "Minsk"
-                        ],
-                        "a": 0
-                  },
-                  {
-                        "q": "What is the capital of Spain?",
-                        "opts": [
-                              "Barcelona",
-                              "Madrid",
-                              "Seville",
-                              "Valencia"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "3": [
-                  {
-                        "q": "What is the longest river in the world?",
-                        "opts": [
-                              "Amazon",
-                              "Mississippi",
-                              "Nile",
-                              "Yangtze"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the largest desert in the world?",
-                        "opts": [
-                              "Sahara",
-                              "Gobi",
-                              "Antarctic",
-                              "Arabian"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the deepest ocean trench?",
-                        "opts": [
-                              "Puerto Rico Trench",
-                              "Mariana Trench",
-                              "Java Trench",
-                              "Tonga Trench"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Rocky Mountains are on which continent?",
-                        "opts": [
-                              "Europe",
-                              "Asia",
-                              "South America",
-                              "North America"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "Which river flows through London?",
-                        "opts": [
-                              "Seine",
-                              "Rhine",
-                              "Thames",
-                              "Danube"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What mountain range separates Europe from Asia?",
-                        "opts": [
-                              "Alps",
-                              "Andes",
-                              "Himalayas",
-                              "Urals"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "The Dead Sea borders Israel and which country?",
-                        "opts": [
-                              "Egypt",
-                              "Jordan",
-                              "Syria",
-                              "Lebanon"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "4": [
-                  {
-                        "q": "What climate zone is near the equator?",
-                        "opts": [
-                              "Arctic",
-                              "Tropical",
-                              "Temperate",
-                              "Polar"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What biome has the most biodiversity?",
-                        "opts": [
-                              "Desert",
-                              "Tundra",
-                              "Rainforest",
-                              "Grassland"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Tundra is found near which part of Earth?",
-                        "opts": [
-                              "Equator",
-                              "Tropics",
-                              "Poles",
-                              "Temperate zone"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What type of forest loses its leaves in fall?",
-                        "opts": [
-                              "Tropical",
-                              "Coniferous",
-                              "Deciduous",
-                              "Rainforest"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which continent has the largest tropical rainforest?",
-                        "opts": [
-                              "Africa",
-                              "Asia",
-                              "South America",
-                              "North America"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "The Sahara Desert has what type of climate?",
-                        "opts": [
-                              "Tropical",
-                              "Arid",
-                              "Temperate",
-                              "Polar"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "5": [
-                  {
-                        "q": "What strait separates Asia from North America?",
-                        "opts": [
-                              "Gibraltar",
-                              "Bering",
-                              "Magellan",
-                              "Hormuz"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which sea is the saltiest in the world?",
-                        "opts": [
-                              "Red Sea",
-                              "Dead Sea",
-                              "Black Sea",
-                              "Caspian Sea"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the Ring of Fire?",
-                        "opts": [
-                              "A desert",
-                              "A zone of volcanoes",
-                              "A tropical storm",
-                              "An ocean current"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What percentage of Earth's surface is covered by water?",
-                        "opts": [
-                              "50%",
-                              "60%",
-                              "70%",
-                              "80%"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which country has the most time zones?",
-                        "opts": [
-                              "Russia",
-                              "USA",
-                              "China",
-                              "France"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What is an archipelago?",
-                        "opts": [
-                              "A mountain range",
-                              "A chain of islands",
-                              "A large lake",
-                              "A deep valley"
-                        ],
-                        "a": 1
-                  }
-            ]
-      },
-      "5": {
-            "1": [
-                  {
-                        "q": "What is the capital of South Korea?",
-                        "opts": [
-                              "Busan",
-                              "Seoul",
-                              "Pyongyang",
-                              "Tokyo"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Which African country was never colonized by Europeans?",
-                        "opts": [
-                              "Nigeria",
-                              "Kenya",
-                              "Ethiopia",
-                              "Ghana"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the smallest country in the world?",
-                        "opts": [
-                              "Monaco",
-                              "Malta",
-                              "Vatican City",
-                              "San Marino"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What country has the most natural lakes?",
-                        "opts": [
-                              "Russia",
-                              "USA",
-                              "Canada",
-                              "Finland"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which country is known as the Land of the Rising Sun?",
-                        "opts": [
-                              "China",
-                              "Thailand",
-                              "Japan",
-                              "Vietnam"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "On which continent is the country of Turkey?",
-                        "opts": [
-                              "Asia only",
-                              "Europe only",
-                              "Both Asia and Europe",
-                              "Africa"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "2": [
-                  {
-                        "q": "What is the capital of Egypt?",
-                        "opts": [
-                              "Alexandria",
-                              "Cairo",
-                              "Luxor",
-                              "Giza"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Argentina?",
-                        "opts": [
-                              "Santiago",
-                              "Lima",
-                              "Buenos Aires",
-                              "Bogot\u00e1"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the capital of Thailand?",
-                        "opts": [
-                              "Bangkok",
-                              "Hanoi",
-                              "Manila",
-                              "Jakarta"
-                        ],
-                        "a": 0
-                  },
-                  {
-                        "q": "What is the capital of Kenya?",
-                        "opts": [
-                              "Lagos",
-                              "Nairobi",
-                              "Addis Ababa",
-                              "Kampala"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of Turkey?",
-                        "opts": [
-                              "Istanbul",
-                              "Ankara",
-                              "Izmir",
-                              "Antalya"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the capital of New Zealand?",
-                        "opts": [
-                              "Auckland",
-                              "Christchurch",
-                              "Wellington",
-                              "Queenstown"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "3": [
-                  {
-                        "q": "The Andes are the longest mountain range. Where are they?",
-                        "opts": [
-                              "Asia",
-                              "North America",
-                              "Europe",
-                              "South America"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What is the largest lake in Africa?",
-                        "opts": [
-                              "Lake Chad",
-                              "Lake Victoria",
-                              "Lake Tanganyika",
-                              "Lake Malawi"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "Through how many countries does the Amazon River flow?",
-                        "opts": [
-                              "3",
-                              "5",
-                              "7",
-                              "9"
-                        ],
-                        "a": 3
-                  },
-                  {
-                        "q": "What is the highest waterfall in the world?",
-                        "opts": [
-                              "Niagara Falls",
-                              "Angel Falls",
-                              "Victoria Falls",
-                              "Iguazu Falls"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Gobi Desert is in which two countries?",
-                        "opts": [
-                              "Iran & Iraq",
-                              "China & Mongolia",
-                              "India & Pakistan",
-                              "Egypt & Libya"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is the largest island in the world?",
-                        "opts": [
-                              "Madagascar",
-                              "Borneo",
-                              "Greenland",
-                              "New Guinea"
-                        ],
-                        "a": 2
-                  }
-            ],
-            "4": [
-                  {
-                        "q": "What language is most widely spoken as a first language?",
-                        "opts": [
-                              "English",
-                              "Spanish",
-                              "Mandarin Chinese",
-                              "Hindi"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which country produces the most coffee?",
-                        "opts": [
-                              "Colombia",
-                              "Ethiopia",
-                              "Brazil",
-                              "Vietnam"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the most visited country in the world?",
-                        "opts": [
-                              "USA",
-                              "Spain",
-                              "France",
-                              "Italy"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "The Silk Road connected China to where?",
-                        "opts": [
-                              "Africa",
-                              "Americas",
-                              "Europe",
-                              "Australia"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What currency is used in Japan?",
-                        "opts": [
-                              "Won",
-                              "Yuan",
-                              "Yen",
-                              "Baht"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "Which country is famous for its fjords?",
-                        "opts": [
-                              "Sweden",
-                              "Norway",
-                              "Finland",
-                              "Iceland"
-                        ],
-                        "a": 1
-                  }
-            ],
-            "5": [
-                  {
-                        "q": "What is the International Date Line?",
-                        "opts": [
-                              "The equator",
-                              "The Prime Meridian",
-                              "A line at 180\u00b0 longitude",
-                              "The Tropic of Cancer"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What causes ocean tides?",
-                        "opts": [
-                              "Wind",
-                              "Earth's rotation",
-                              "Gravity of the Moon",
-                              "Earthquakes"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What is the difference between weather and climate?",
-                        "opts": [
-                              "They are the same",
-                              "Climate is daily, weather is long-term",
-                              "Weather is daily, climate is long-term",
-                              "Climate is about wind only"
-                        ],
-                        "a": 2
-                  },
-                  {
-                        "q": "What are tectonic plates?",
-                        "opts": [
-                              "Ocean floors",
-                              "Large pieces of Earth's crust",
-                              "Cloud formations",
-                              "Mountain ranges"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "The Gulf Stream is a type of what?",
-                        "opts": [
-                              "Wind pattern",
-                              "Ocean current",
-                              "River system",
-                              "Tectonic plate"
-                        ],
-                        "a": 1
-                  },
-                  {
-                        "q": "What is erosion?",
-                        "opts": [
-                              "Volcanic eruption",
-                              "Wearing away of land by wind or water",
-                              "Growth of mountains",
-                              "Flooding"
-                        ],
-                        "a": 1
-                  }
-            ]
-      }
-};
+// ==================== AUDIO ====================
+var audioCtx=null;
+function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playCorrectSound(){try{var c=getAudioCtx();if(c.state==='suspended')c.resume();var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(523,c.currentTime);o.frequency.setValueAtTime(659,c.currentTime+0.08);o.frequency.setValueAtTime(784,c.currentTime+0.16);g.gain.setValueAtTime(0.18,c.currentTime);g.gain.linearRampToValueAtTime(0,c.currentTime+0.3);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.3)}catch(e){}}
+function playWrongSound(){try{var c=getAudioCtx();if(c.state==='suspended')c.resume();var o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.setValueAtTime(200,c.currentTime);o.frequency.linearRampToValueAtTime(150,c.currentTime+0.25);g.gain.setValueAtTime(0.1,c.currentTime);g.gain.linearRampToValueAtTime(0,c.currentTime+0.3);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+0.3)}catch(e){}}
+function playGoatSound(){try{var c=getAudioCtx();if(c.state==='suspended')c.resume();for(var i=0;i<3;i++){var t=c.currentTime+i*0.22,o=c.createOscillator(),g=c.createGain(),v=c.createOscillator(),vg=c.createGain();v.frequency.value=25+i*5;vg.gain.value=80;v.connect(vg);vg.connect(o.frequency);o.type='sawtooth';o.frequency.setValueAtTime(600+i*40,t);o.frequency.linearRampToValueAtTime(350+i*30,t+0.15);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.22,t+0.03);g.gain.linearRampToValueAtTime(0.15,t+0.1);g.gain.linearRampToValueAtTime(0,t+0.2);o.connect(g);g.connect(c.destination);v.start(t);o.start(t);v.stop(t+0.25);o.stop(t+0.25)}}catch(e){}}
 
-    // ===================== STATE =====================
-    var state = {
-      playerName:'', subject:null, grade:null, difficulty:1,
-      voiceChoice:'us-woman', problem:null, streak:0,
-      totalCorrect:0, totalAttempted:0,
-      consecutiveCorrect:0, consecutiveWrong:0,
-      usedWords:{}, usedGeo:{}, geoLocked:false,
-    };
-    var CORRECT_TO_LEVEL_UP = 4, WRONG_TO_LEVEL_DOWN = 3;
+// ==================== STORAGE ====================
+var SK='lq_stats_v2';
+function getStats(){try{var s=localStorage.getItem(SK);if(s)return JSON.parse(s)}catch(e){}return{players:{},pin:'1234'}}
+function saveStats(s){try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){}}
+function getP(name){var s=getStats();if(!s.players[name]){s.players[name]={hs:{},ts:{},ls:{},lv:{},ach:{},daily:{},dailyStreak:0,lastDay:''};GAMES.forEach(function(g){s.players[name].hs[g]=0;s.players[name].ts[g]=0;s.players[name].ls[g]=0;s.players[name].lv[g]=1});saveStats(s)}return s.players[name]}
 
-    function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-    function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)]}
-    var CORRECT_MSGS=["Awesome! 🎉","You got it! ⭐","Amazing! 🚀","Brilliant! 💡","Super star! 🌟","Nailed it! 🎯","Fantastic! 🎊","Way to go! 🏆","Perfect! 💎","Outstanding! 🔥","You rock! 🎸","Incredible! 🦄"];
-    var WRONG_MSGS=["Almost! Try again! 💪","So close! Keep going! 🌈","Not quite, you'll get the next one! 🍀","Keep trying! You're learning! 📚"];
+// ==================== DAILY STREAK ====================
+function updateDailyStreak(){var s=getStats(),p=s.players[state.playerName];if(!p)return;var t=today();if(p.lastDay===t)return;var yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);var yd=yesterday.toISOString().split('T')[0];if(p.lastDay===yd){p.dailyStreak=(p.dailyStreak||0)+1}else if(p.lastDay!==t){p.dailyStreak=1}p.lastDay=t;if(!p.daily)p.daily={};p.daily[t]=true;saveStats(s)}
+function showDailyStreak(){var p=getP(state.playerName);var ds=p.dailyStreak||0;var area=document.getElementById('daily-streak-area');if(ds>=2){area.innerHTML='<div class="daily-streak-badge">📅 '+ds+' day streak!</div>'}else{area.innerHTML=''}}
 
-    // ===================== GOAT SOUND =====================
-    var audioCtx=null;
-    function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
-    function playGoatSound(){
-      try{var ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();
-      for(var i=0;i<3;i++){var t=ctx.currentTime+i*0.22;var osc=ctx.createOscillator();var gain=ctx.createGain();var vib=ctx.createOscillator();var vibG=ctx.createGain();
-      vib.frequency.value=25+i*5;vibG.gain.value=80;vib.connect(vibG);vibG.connect(osc.frequency);
-      osc.type='sawtooth';osc.frequency.setValueAtTime(600+i*40,t);osc.frequency.linearRampToValueAtTime(350+i*30,t+0.15);
-      gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(0.25,t+0.03);gain.gain.linearRampToValueAtTime(0.18,t+0.1);gain.gain.linearRampToValueAtTime(0,t+0.2);
-      osc.connect(gain);gain.connect(ctx.destination);vib.start(t);osc.start(t);vib.stop(t+0.25);osc.stop(t+0.25)}}catch(e){}
-    }
+// ==================== PROFILES ====================
+function renderProfiles(){var s=getStats();var names=Object.keys(s.players||{});var area=document.getElementById('profiles-area');if(!names.length){area.innerHTML='';return}var h='<div class="profiles-title">Returning Players</div><div class="profile-list">';names.forEach(function(n){var p=s.players[n];var ds=p.dailyStreak||0;var meta=ds>=2?'🔥 '+ds+' day streak':'';h+='<div class="profile-btn" onclick="loginProfile(''+n.replace(/'/g,"\'")+'')" style="cursor:pointer"><div><div>'+n+'</div><div class="profile-meta">'+meta+'</div></div><button class="profile-del" onclick="event.stopPropagation();deleteProfile(''+n.replace(/'/g,"\'")+'')">✕</button></div>'});h+='</div>';area.innerHTML=h}
+function loginProfile(name){state.playerName=name;document.getElementById('home-greeting').textContent='Hey '+name+'! Pick a subject!';updateDailyStreak();showDailyStreak();showScreen('home')}
+function deleteProfile(name){if(!confirm('Delete all data for '+name+'?'))return;var s=getStats();delete s.players[name];saveStats(s);renderProfiles()}
+function submitName(){var inp=document.getElementById('name-input'),name=inp.value.trim();if(!name){inp.focus();return}loginProfile(name);inp.value=''}
 
-    // ===================== MATH GENERATOR =====================
-    function generateMathProblem(grade,diff){
-      var a,b,answer,question;
-      if(grade===2){if(diff<=2){a=randInt(1,10*diff);b=randInt(1,10*diff);if(Math.random()>0.5){answer=a+b;question=a+' + '+b}else{if(a<b){var tmp=a;a=b;b=tmp}answer=a-b;question=a+' − '+b}}else if(diff===3){a=randInt(10,50);b=randInt(10,50);if(Math.random()>0.5){answer=a+b;question=a+' + '+b}else{if(a<b){var tmp=a;a=b;b=tmp}answer=a-b;question=a+' − '+b}}else if(diff===4){a=randInt(2,5);b=randInt(2,5);answer=a*b;question=a+' × '+b}else{a=randInt(2,10);b=randInt(2,10);answer=a*b;question=a+' × '+b}}
-      else if(grade===3){if(diff<=2){a=randInt(10,50*diff);b=randInt(10,50*diff);if(Math.random()>0.5){answer=a+b;question=a+' + '+b}else{if(a<b){var tmp=a;a=b;b=tmp}answer=a-b;question=a+' − '+b}}else if(diff===3){a=randInt(2,9);b=randInt(2,9);answer=a*b;question=a+' × '+b}else if(diff===4){a=randInt(2,9);b=randInt(2,9);var p=a*b;answer=b;question=p+' ÷ '+a}else{a=randInt(100,500);b=randInt(100,500);answer=a+b;question=a+' + '+b}}
-      else if(grade===4){if(diff<=2){a=randInt(2,12);b=randInt(2,12);answer=a*b;question=a+' × '+b}else if(diff===3){a=randInt(12,50);b=randInt(2,9);answer=a*b;question=a+' × '+b}else if(diff===4){b=randInt(2,12);answer=randInt(5,25);a=b*answer;question=a+' ÷ '+b}else{a=randInt(10,50);b=randInt(2,9);var c=randInt(1,20);answer=a*b+c;question=a+' × '+b+' + '+c}}
-      else{if(diff<=2){a=randInt(10,99);b=randInt(2,12);answer=a*b;question=a+' × '+b}else if(diff===3){b=randInt(5,25);answer=randInt(3,15);a=b*answer;question=a+' ÷ '+b}else if(diff===4){a=randInt(1,9);b=[2,4,5,10][randInt(0,3)];answer=a/b;question=a+' ÷ '+b}else{a=randInt(2,12);var exp=randInt(2,3);answer=Math.pow(a,exp);question=a+(exp===2?'²':'³')}}
-      return{question:question,answer:String(answer)}
-    }
+// ==================== SCREENS ====================
+function showScreen(n){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById('screen-'+n).classList.add('active')}
+function selectSubject(s){state.subject=s;if(s==='spelling'){showScreen('voice');return}document.getElementById('grade-title').textContent=(GICONS[s]||'')+' '+GLABELS[s];showScreen('grade')}
+function goBackFromGrade(){showScreen(state.subject==='spelling'?'voice':'home')}
+function selectGrade(g){state.grade=g;document.getElementById('mode-subtitle').textContent=GLABELS[state.subject]+' · Grade '+g;showScreen('mode')}
+function confirmVoice(){document.getElementById('grade-title').textContent='📖 Spelling';showScreen('grade')}
+function endSession(){if(state.timerInterval)clearInterval(state.timerInterval);showScreen('home')}
 
-    // ===================== WORD PICKER (NO REPEATS) =====================
-    function pickNoRepeat(pool, usedMap, key){
-      if(!usedMap[key])usedMap[key]={};
-      var available=pool.filter(function(w){return !usedMap[key][w]});
-      if(available.length===0){usedMap[key]={};available=pool.slice()}
-      var item=pickRandom(available);usedMap[key][item]=true;return item;
-    }
+// ==================== VOICE ====================
+function findVoice(type){var voices=window.speechSynthesis.getVoices();if(!voices.length)return null;var isUS=type.indexOf('us')===0,lp=isUS?'en-US':'en-GB';var nm={'us-woman':['samantha','karen','allison','ava','zira','female'],'us-man':['alex','tom','fred','david','mark','male'],'uk-woman':['kate','serena','fiona','moira','hazel','female'],'uk-man':['daniel','oliver','arthur','george','male']};var pr=nm[type]||[];for(var i=0;i<pr.length;i++)for(var j=0;j<voices.length;j++)if(voices[j].name.toLowerCase().indexOf(pr[i])!==-1&&voices[j].lang.replace('_','-').indexOf(lp)===0)return voices[j];for(var j=0;j<voices.length;j++)if(voices[j].lang.replace('_','-').indexOf(lp)===0)return voices[j];for(var j=0;j<voices.length;j++)if(voices[j].lang.indexOf('en')===0)return voices[j];return null}
+function selectVoice(type,btn){state.voiceChoice=type;document.querySelectorAll('.voice-card').forEach(function(c){c.classList.remove('selected')});if(btn)btn.classList.add('selected');if('speechSynthesis' in window){window.speechSynthesis.cancel();var v=findVoice(type),u=new SpeechSynthesisUtterance('Hi '+(state.playerName||'there')+'! Ready?');u.rate=0.72;u.volume=1.0;if(v)u.voice=v;window.speechSynthesis.speak(u)}document.getElementById('btn-confirm-voice').style.display='inline-block'}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices()};speechSynthesis.getVoices()}
 
-    function scrambleWord(word){
-      var arr=word.split('');for(var i=arr.length-1;i>0;i--){var j=randInt(0,i);var t=arr[i];arr[i]=arr[j];arr[j]=t}
-      var result=arr.join('');
-      if(result===word&&word.length>2)return scrambleWord(word);
-      return result;
-    }
+// ==================== MATH ====================
+function genMath(gr,df){var a,b,ans,q;if(gr===2){if(df<=2){a=randInt(1,10*df);b=randInt(1,10*df);if(Math.random()>0.5){ans=a+b;q=a+' + '+b}else{if(a<b){var t=a;a=b;b=t}ans=a-b;q=a+' − '+b}}else if(df===3){a=randInt(10,50);b=randInt(10,50);if(Math.random()>0.5){ans=a+b;q=a+' + '+b}else{if(a<b){var t=a;a=b;b=t}ans=a-b;q=a+' − '+b}}else if(df===4){a=randInt(2,5);b=randInt(2,5);ans=a*b;q=a+' × '+b}else{a=randInt(2,10);b=randInt(2,10);ans=a*b;q=a+' × '+b}}else if(gr===3){if(df<=2){a=randInt(10,50*df);b=randInt(10,50*df);if(Math.random()>0.5){ans=a+b;q=a+' + '+b}else{if(a<b){var t=a;a=b;b=t}ans=a-b;q=a+' − '+b}}else if(df===3){a=randInt(2,9);b=randInt(2,9);ans=a*b;q=a+' × '+b}else if(df===4){a=randInt(2,9);b=randInt(2,9);var p=a*b;ans=b;q=p+' ÷ '+a}else{a=randInt(100,500);b=randInt(100,500);ans=a+b;q=a+' + '+b}}else if(gr===4){if(df<=2){a=randInt(2,12);b=randInt(2,12);ans=a*b;q=a+' × '+b}else if(df===3){a=randInt(12,50);b=randInt(2,9);ans=a*b;q=a+' × '+b}else if(df===4){b=randInt(2,12);ans=randInt(5,25);a=b*ans;q=a+' ÷ '+b}else{a=randInt(10,50);b=randInt(2,9);var c=randInt(1,20);ans=a*b+c;q=a+' × '+b+' + '+c}}else{if(df<=2){a=randInt(10,99);b=randInt(2,12);ans=a*b;q=a+' × '+b}else if(df===3){b=randInt(5,25);ans=randInt(3,15);a=b*ans;q=a+' ÷ '+b}else if(df===4){a=randInt(1,9);b=[2,4,5,10][randInt(0,3)];ans=a/b;q=a+' ÷ '+b}else{a=randInt(2,12);var e=randInt(2,3);ans=Math.pow(a,e);q=a+(e===2?'²':'³')}}return{question:q,answer:String(ans)}}
 
-    // ===================== SCREENS =====================
-    function showScreen(name){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById('screen-'+name).classList.add('active')}
-    function submitName(){var input=document.getElementById('name-input');var name=input.value.trim();if(!name){input.focus();return}state.playerName=name;document.getElementById('home-greeting').textContent='Hey '+name+'! Pick a subject!';showScreen('home')}
-    document.getElementById('name-input').addEventListener('keydown',function(e){if(e.key==='Enter')submitName()});
+// ==================== WORD TOOLS ====================
+function pickNoRepeat(pool,map,key){if(!map[key])map[key]={};var av=pool.filter(function(w){return!map[key][w]});if(!av.length){map[key]={};av=pool.slice()}var it=pickRandom(av);map[key][it]=true;return it}
+function scrambleWord(w){var a=w.split('');for(var i=a.length-1;i>0;i--){var j=randInt(0,i);var t=a[i];a[i]=a[j];a[j]=t}var r=a.join('');return(r===w&&w.length>2)?scrambleWord(w):r}
 
-    function selectSubject(subj){
-      state.subject=subj;
-      if(subj==='spelling'){showScreen('voice');return}
-      var icons={math:'🔢',scramble:'🔀',geography:'🌍'};
-      var labels={math:'Math',scramble:'Scramble',geography:'Geography'};
-      document.getElementById('grade-title').textContent=(icons[subj]||'')+' '+labels[subj];
-      showScreen('grade');
-    }
-    function goBackFromGrade(){showScreen(state.subject==='spelling'?'voice':'home')}
+// ==================== GAME START ====================
+function startGame(mode){state.mode=mode;state.difficulty=1;state.streak=0;state.bestStreak=0;state.totalCorrect=0;state.totalAttempted=0;state.consecutiveCorrect=0;state.consecutiveWrong=0;state.usedWords={};state.usedGeo={};state.timerSeconds=60;if(state.timerInterval)clearInterval(state.timerInterval);document.getElementById('timer-badge').style.display=mode==='timed'?'flex':'none';document.getElementById('progress-section').style.display=mode==='timed'?'none':'block';if(mode==='timed'){state.timerInterval=setInterval(function(){state.timerSeconds--;document.getElementById('stat-timer').textContent=state.timerSeconds;if(state.timerSeconds<=10)document.getElementById('stat-timer').style.color='var(--accent-red)';if(state.timerSeconds<=0){clearInterval(state.timerInterval);endTimedGame()}},1000)}updateDailyStreak();generateProblem();showScreen('play');updateUI();setTimeout(function(){var inp=document.getElementById('answer-input');if(inp&&state.subject!=='geography')inp.focus()},300)}
 
-    // ===================== VOICE =====================
-    function findVoice(type){
-      var voices=window.speechSynthesis.getVoices();if(!voices.length)return null;
-      var isUS=type.indexOf('us')===0;var langPfx=isUS?'en-US':'en-GB';
-      var names={'us-woman':['samantha','karen','allison','ava','zira','female'],'us-man':['alex','tom','fred','david','mark','male'],'uk-woman':['kate','serena','fiona','moira','hazel','female'],'uk-man':['daniel','oliver','arthur','george','male']};
-      var prefs=names[type]||[];
-      for(var i=0;i<prefs.length;i++){for(var j=0;j<voices.length;j++){if(voices[j].name.toLowerCase().indexOf(prefs[i])!==-1&&voices[j].lang.replace('_','-').indexOf(langPfx)===0)return voices[j]}}
-      for(var j=0;j<voices.length;j++){if(voices[j].lang.replace('_','-').indexOf(langPfx)===0)return voices[j]}
-      for(var j=0;j<voices.length;j++){if(voices[j].lang.indexOf('en')===0)return voices[j]}
-      return null;
-    }
-    function selectVoice(type,btn){
-      state.voiceChoice=type;
-      document.querySelectorAll('.voice-card').forEach(function(c){c.classList.remove('selected')});
-      if(btn)btn.classList.add('selected');
-      if('speechSynthesis' in window){window.speechSynthesis.cancel();var v=findVoice(type);var u=new SpeechSynthesisUtterance('Hi '+(state.playerName||'there')+'! Ready to spell?');u.rate=0.72;u.pitch=1.0;u.volume=1.0;if(v)u.voice=v;window.speechSynthesis.speak(u)}
-      document.getElementById('btn-confirm-voice').style.display='inline-block';
-    }
-    function confirmVoice(){document.getElementById('grade-title').textContent='📖 Spelling';showScreen('grade')}
-    if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices()};speechSynthesis.getVoices()}
+function endTimedGame(){var s=getStats(),p=s.players[state.playerName];if(p){if(state.totalCorrect>(p.ts[state.subject]||0)){p.ts[state.subject]=state.totalCorrect}if(state.bestStreak>(p.ls[state.subject]||0))p.ls[state.subject]=state.bestStreak;if(state.totalAttempted>=5){var pct=Math.round(state.totalCorrect/state.totalAttempted*100);if(pct>(p.hs[state.subject]||0))p.hs[state.subject]=pct}checkAch(p);saveStats(s)}document.getElementById('tr-correct').textContent=state.totalCorrect;document.getElementById('tr-attempted').textContent=state.totalAttempted;document.getElementById('tr-accuracy').textContent=state.totalAttempted?Math.round(state.totalCorrect/state.totalAttempted*100)+'%':'0%';document.getElementById('tr-streak').textContent=state.bestStreak;var rec=p&&state.totalCorrect>=(p.ts[state.subject]||0)?'🎉 NEW RECORD!':'';document.getElementById('tr-record').textContent=rec;showScreen('timed-results')}
 
-    // ===================== GAME START =====================
-    function startGame(grade){
-      state.grade=grade;state.difficulty=1;state.streak=0;state.totalCorrect=0;state.totalAttempted=0;
-      state.consecutiveCorrect=0;state.consecutiveWrong=0;state.usedWords={};state.usedGeo={};
-      generateProblem();showScreen('play');updateUI();
-      setTimeout(function(){var inp=document.getElementById('answer-input');if(inp)inp.focus()},300);
-    }
+// ==================== GENERATE PROBLEM ====================
+function generateProblem(){var su=state.subject,gr=state.grade,df=state.difficulty;state.geoLocked=false;if(su==='math')state.problem=genMath(gr,df);else if(su==='spelling'||su==='scramble'){var ws=(SPELLING_WORDS[gr]&&SPELLING_WORDS[gr][df])||SPELLING_WORDS[gr][1];var w=pickNoRepeat(ws,state.usedWords,gr+'-'+df);state.problem={question:w,answer:w};if(su==='scramble')state.problem.scrambled=scrambleWord(w)}else{var qs=(GEO_QUESTIONS[gr]&&GEO_QUESTIONS[gr][df])||GEO_QUESTIONS[gr][1];var qi=pickNoRepeat(qs.map(function(_,i){return i}),state.usedGeo,gr+'-'+df);var q=qs[qi];state.problem={question:q.q,options:q.o,correctIndex:q.a,answer:q.o[q.a]}}document.getElementById('answer-input').value='';document.getElementById('feedback').style.display='none';document.getElementById('hint-text').style.display='none';updateUI();if(su==='spelling')setTimeout(function(){speakWord()},350);if(su!=='geography')setTimeout(function(){document.getElementById('answer-input').focus()},100)}
 
-    // ===================== PROBLEM GENERATION =====================
-    function generateProblem(){
-      var subj=state.subject,gr=state.grade,diff=state.difficulty;
-      state.geoLocked=false;
-      if(subj==='math'){
-        state.problem=generateMathProblem(gr,diff);
-      } else if(subj==='spelling'||subj==='scramble'){
-        var words=(SPELLING_WORDS[gr]&&SPELLING_WORDS[gr][diff])||SPELLING_WORDS[gr][1];
-        var word=pickNoRepeat(words,state.usedWords,gr+'-'+diff);
-        state.problem={question:word,answer:word};
-        if(subj==='scramble')state.problem.scrambled=scrambleWord(word);
-      } else if(subj==='geography'){
-        var qs=(GEO_QUESTIONS[gr]&&GEO_QUESTIONS[gr][diff])||GEO_QUESTIONS[gr][1];
-        var qIdx=pickNoRepeat(qs.map(function(_,i){return i}),state.usedGeo,gr+'-'+diff);
-        var q=qs[qIdx];
-        state.problem={question:q.q,options:q.opts,correctIndex:q.a,answer:q.opts[q.a]};
-      }
-      document.getElementById('answer-input').value='';
-      document.getElementById('feedback').style.display='none';
-      document.getElementById('hint-text').style.display='none';
-      updateUI();
-      if(subj==='spelling')setTimeout(function(){speakWord()},400);
-      if(subj!=='geography')setTimeout(function(){document.getElementById('answer-input').focus()},100);
-    }
+// ==================== SPEAK ====================
+function speakWord(){if(!state.problem||state.subject!=='spelling'||!('speechSynthesis' in window))return;window.speechSynthesis.cancel();var w=state.problem.question,v=findVoice(state.voiceChoice);var u1=new SpeechSynthesisUtterance(w);u1.rate=0.62;u1.pitch=1.05;u1.volume=1.0;if(v)u1.voice=v;var u2=new SpeechSynthesisUtterance(w);u2.rate=0.72;u2.volume=1.0;if(v)u2.voice=v;window.speechSynthesis.speak(u1);u1.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u2)},600)}}
+function speakSentence(){if(!state.problem||state.subject!=='spelling'||!('speechSynthesis' in window))return;window.speechSynthesis.cancel();var w=state.problem.question,sen=SENTENCES[w]||'The word is '+w+'.',v=findVoice(state.voiceChoice);var u1=new SpeechSynthesisUtterance(w);u1.rate=0.62;u1.pitch=1.05;u1.volume=1.0;if(v)u1.voice=v;var u2=new SpeechSynthesisUtterance(sen);u2.rate=0.78;u2.volume=1.0;if(v)u2.voice=v;var u3=new SpeechSynthesisUtterance(w);u3.rate=0.62;u3.pitch=1.05;u3.volume=1.0;if(v)u3.voice=v;window.speechSynthesis.speak(u1);u1.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u2);u2.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u3)},500)}},500)}}
 
-    // ===================== SPEAK WORD + SENTENCE =====================
-    function speakWord(){
-      if(!state.problem||state.subject!=='spelling'||!('speechSynthesis' in window))return;
-      window.speechSynthesis.cancel();
-      var word=state.problem.question,voice=findVoice(state.voiceChoice);
-      var u1=new SpeechSynthesisUtterance(word);u1.rate=0.62;u1.pitch=1.05;u1.volume=1.0;if(voice)u1.voice=voice;
-      var u2=new SpeechSynthesisUtterance(word);u2.rate=0.72;u2.pitch=1.0;u2.volume=1.0;if(voice)u2.voice=voice;
-      window.speechSynthesis.speak(u1);
-      u1.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u2)},600)};
-    }
-    function speakSentence(){
-      if(!state.problem||state.subject!=='spelling'||!('speechSynthesis' in window))return;
-      window.speechSynthesis.cancel();
-      var word=state.problem.question;
-      var sentence=SENTENCES[word]||('The word is '+word+'.');
-      var voice=findVoice(state.voiceChoice);
-      // Say word, then sentence, then word again
-      var u1=new SpeechSynthesisUtterance(word);u1.rate=0.62;u1.pitch=1.05;u1.volume=1.0;if(voice)u1.voice=voice;
-      var u2=new SpeechSynthesisUtterance(sentence);u2.rate=0.78;u2.pitch=1.0;u2.volume=1.0;if(voice)u2.voice=voice;
-      var u3=new SpeechSynthesisUtterance(word);u3.rate=0.62;u3.pitch=1.05;u3.volume=1.0;if(voice)u3.voice=voice;
-      window.speechSynthesis.speak(u1);
-      u1.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u2);u2.onend=function(){setTimeout(function(){window.speechSynthesis.speak(u3)},500)}},500)};
-    }
+// ==================== ANSWERS ====================
+function geoAnswer(i){if(state.geoLocked)return;state.geoLocked=true;var ok=i===state.problem.correctIndex;var bs=document.querySelectorAll('.geo-opt');bs[i].classList.add(ok?'correct-pick':'wrong-pick');if(!ok)bs[state.problem.correctIndex].classList.add('reveal-correct');processAnswer(ok)}
+function checkAnswer(){var inp=document.getElementById('answer-input'),v=inp.value.trim();if(!v)return;var ok=state.subject==='math'?parseFloat(v)===parseFloat(state.problem.answer):v.toLowerCase()===state.problem.answer.toLowerCase();inp.value='';processAnswer(ok)}
+function processAnswer(ok){state.totalAttempted++;if(ok){playCorrectSound();state.totalCorrect++;state.streak++;if(state.streak>state.bestStreak)state.bestStreak=state.streak;state.consecutiveWrong=0;state.consecutiveCorrect++;if(state.mode==='practice'&&state.consecutiveCorrect>=CORRECT_TO_LEVEL_UP&&state.difficulty<5){state.difficulty++;state.consecutiveCorrect=0;showGoatLevelUp();showConfetti();showFeedback(true,pickRandom(CORRECT_MSGS));setTimeout(function(){generateProblem()},3400)}else{showFeedback(true,pickRandom(CORRECT_MSGS));setTimeout(function(){generateProblem()},state.mode==='timed'?600:900)}}else{playWrongSound();state.streak=0;state.consecutiveCorrect=0;state.consecutiveWrong++;if(state.mode==='practice'&&state.consecutiveWrong>=WRONG_TO_LEVEL_DOWN&&state.difficulty>1){state.difficulty--;state.consecutiveWrong=0;showFeedback(false,"Easier level — you got this! 💪",state.problem.answer);setTimeout(function(){generateProblem()},2000)}else{if(state.subject==='spelling'){var w=state.problem.answer,hc=Math.floor(w.length*0.4);var h=w.substring(0,hc+1)+w.substring(hc+1).replace(/[a-z]/gi,' _');document.getElementById('hint-text').innerHTML='Hint: <strong>'+h+'</strong>';document.getElementById('hint-text').style.display='block'}showFeedback(false,pickRandom(WRONG_MSGS),state.problem.answer);setTimeout(function(){generateProblem()},state.mode==='timed'?1200:2200)}}updatePlayerStats();updateUI()}
 
-    // ===================== GEO ANSWER =====================
-    function geoAnswer(idx){
-      if(state.geoLocked)return;
-      state.geoLocked=true;
-      var correct=idx===state.problem.correctIndex;
-      var btns=document.querySelectorAll('.geo-opt');
-      btns[idx].classList.add(correct?'correct-pick':'wrong-pick');
-      if(!correct)btns[state.problem.correctIndex].classList.add('reveal-correct');
-      processAnswer(correct);
-    }
+// ==================== STATS PERSISTENCE ====================
+function updatePlayerStats(){if(!state.playerName)return;var s=getStats(),p=s.players[state.playerName];if(!p)return;var g=state.subject;if(state.mode==='practice'&&state.totalAttempted>=5){var pct=Math.round(state.totalCorrect/state.totalAttempted*100);if(pct>(p.hs[g]||0)){p.hs[g]=pct;showToast('🎯 New high score: '+pct+'%!')}}if(state.bestStreak>(p.ls[g]||0)){p.ls[g]=state.bestStreak;if(state.bestStreak>=3&&state.bestStreak===state.streak)showToast('🔥 Streak record: '+state.bestStreak+'!')}if(state.difficulty>(p.lv[g]||1))p.lv[g]=state.difficulty;checkAch(p);saveStats(s)}
 
-    // ===================== CHECK ANSWER =====================
-    function checkAnswer(){
-      var input=document.getElementById('answer-input');var val=input.value.trim();if(!val)return;
-      var correct;
-      if(state.subject==='math')correct=parseFloat(val)===parseFloat(state.problem.answer);
-      else correct=val.toLowerCase()===state.problem.answer.toLowerCase();
-      input.value='';
-      processAnswer(correct);
-    }
+// ==================== ACHIEVEMENTS ====================
+function checkAch(p){if(!p.ach)p.ach={};var nw=[];function un(id){if(!p.ach[id]){p.ach[id]=true;nw.push(id)}}if(state.totalCorrect>=1)un('first_correct');var ms=Math.max.apply(null,GAMES.map(function(g){return p.ls[g]||0}));if(ms>=5)un('streak_5');if(ms>=10)un('streak_10');if(state.totalAttempted>=10&&state.totalCorrect===state.totalAttempted)un('perfect_10');var ml=Math.max.apply(null,GAMES.map(function(g){return p.lv[g]||1}));if(ml>=3)un('level_3');if(ml>=5){un('level_5');un('goat')}var chkM=function(gm,aid){if(state.subject===gm&&state.totalAttempted>=10&&Math.round(state.totalCorrect/state.totalAttempted*100)>=90)un(aid)};chkM('math','math_master');chkM('spelling','spelling_bee');chkM('scramble','word_wizard');chkM('geography','explorer');var pl=GAMES.filter(function(g){return(p.hs[g]||0)>0||(p.ls[g]||0)>0||(p.ts[g]||0)>0});if(pl.length>=4)un('all_rounder');var mxT=Math.max.apply(null,GAMES.map(function(g){return p.ts[g]||0}));if(mxT>=15)un('speed_demon');if((p.dailyStreak||0)>=3)un('daily_3');if((p.dailyStreak||0)>=7)un('daily_7');nw.forEach(function(id){var a=ACHIEVEMENTS.find(function(x){return x.id===id});if(a)setTimeout(function(){showToast(a.icon+' '+a.name+'!')},600)})}
 
-    function processAnswer(correct){
-      state.totalAttempted++;
-      if(correct){
-        state.totalCorrect++;state.streak++;state.consecutiveWrong=0;state.consecutiveCorrect++;
-        if(state.consecutiveCorrect>=CORRECT_TO_LEVEL_UP&&state.difficulty<5){
-          state.difficulty++;state.consecutiveCorrect=0;
-          showGoatLevelUp();showConfetti();showFeedback(true,pickRandom(CORRECT_MSGS));
-          setTimeout(function(){generateProblem()},3400);
-        }else{showFeedback(true,pickRandom(CORRECT_MSGS));setTimeout(function(){generateProblem()},900)}
-      }else{
-        state.streak=0;state.consecutiveCorrect=0;state.consecutiveWrong++;
-        if(state.consecutiveWrong>=WRONG_TO_LEVEL_DOWN&&state.difficulty>1){
-          state.difficulty--;state.consecutiveWrong=0;
-          showFeedback(false,"Let's try an easier level. You've got this! 💪",state.problem.answer);
-          setTimeout(function(){generateProblem()},2200);
-        }else{
-          if(state.subject==='spelling'){
-            var word=state.problem.answer;var hc=Math.floor(word.length*0.4);
-            var hint=word.substring(0,hc+1)+word.substring(hc+1).replace(/[a-z]/gi,' _');
-            var hintEl=document.getElementById('hint-text');hintEl.innerHTML='Hint: <strong>'+hint+'</strong>';hintEl.style.display='block';
-          }
-          showFeedback(false,pickRandom(WRONG_MSGS),state.problem.answer);
-          setTimeout(function(){generateProblem()},2200);
-        }
-      }
-      updateUI();
-    }
+// ==================== UI ====================
+function updateUI(){document.getElementById('stat-score').textContent=state.totalCorrect+'/'+state.totalAttempted;var sH=String(state.streak);if(state.streak>=2){var sz=Math.min(state.streak*4+16,44);sH+=' <span class="streak-flame" style="font-size:'+sz+'px">🔥</span>'}document.getElementById('stat-streak').innerHTML=sH;document.getElementById('stat-level').textContent=state.difficulty+'/5';if(state.mode==='practice'){var rem=CORRECT_TO_LEVEL_UP-state.consecutiveCorrect;document.getElementById('progress-label').textContent=state.difficulty<5?rem+' more to level up!':"Max level!";var pct=(state.consecutiveCorrect/CORRECT_TO_LEVEL_UP)*100;document.getElementById('progress-fill').style.width=Math.min(pct,100)+'%';for(var i=0;i<CORRECT_TO_LEVEL_UP;i++){var dot=document.getElementById('dot-'+i);if(dot)dot.className='progress-dot'+(i<state.consecutiveCorrect?' filled':'')}}['math-area','spelling-area','scramble-area','geo-area'].forEach(function(id){document.getElementById(id).style.display='none'});var inp=document.getElementById('answer-input'),ia=document.getElementById('text-input-area');if(state.subject==='math'){document.getElementById('math-area').style.display='block';document.getElementById('problem-type').textContent='Solve';document.getElementById('math-expression').textContent=(state.problem?state.problem.question:'')+' = ?';inp.type='number';inp.placeholder='Answer...';ia.style.display='flex'}else if(state.subject==='spelling'){document.getElementById('spelling-area').style.display='flex';document.getElementById('problem-type').textContent='Spell the word';inp.type='text';inp.placeholder='Type word...';ia.style.display='flex'}else if(state.subject==='scramble'){document.getElementById('scramble-area').style.display='block';document.getElementById('problem-type').textContent='Unscramble';document.getElementById('scramble-display').textContent=state.problem?state.problem.scrambled.toUpperCase():'';inp.type='text';inp.placeholder='Type word...';ia.style.display='flex'}else{document.getElementById('geo-area').style.display='block';document.getElementById('problem-type').textContent='Geography';document.getElementById('geo-question').textContent=state.problem?state.problem.question:'';ia.style.display='none';if(state.problem){var oh='';state.problem.options.forEach(function(o,i){oh+='<button class="geo-opt" onclick="geoAnswer('+i+')">'+o+'</button>'});document.getElementById('geo-options').innerHTML=oh}}var modeTag=state.mode==='timed'?' ⏱️':'';document.getElementById('info-footer').textContent='Grade '+state.grade+' · '+GLABELS[state.subject]+modeTag+' · Lvl '+state.difficulty+'/5'}
+function showFeedback(ok,msg,ans){var el=document.getElementById('feedback');var h='<div class="feedback-banner '+(ok?'correct':'wrong')+'"><span class="feedback-text">'+msg+'</span>';if(!ok&&ans)h+='<span class="correct-answer-text">Answer: <strong>'+ans+'</strong></span>';h+='</div>';el.innerHTML=h;el.style.display='block'}
+function showGoatLevelUp(){var ov=document.getElementById('level-up-overlay'),n=state.playerName||'You';var ph=[n+", you're the GOAT! 🐐","GOAT STATUS! "+n+"!","Baaaaa! "+n+" is the GREATEST!",n+" = G.O.A.T. 🐐🐐🐐","LEVEL UP! "+n+", literally the GOAT!"];document.getElementById('level-up-msg').innerHTML='<span class="level-up-goat" style="animation:goatBounce 0.6s ease 3">🐐</span>'+pickRandom(ph);ov.style.display='flex';setTimeout(function(){playGoatSound()},300);if('speechSynthesis' in window)setTimeout(function(){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(n+'! You are the goat!');u.rate=0.85;u.pitch=1.2;u.volume=1.0;var v=findVoice(state.voiceChoice||'us-woman');if(v)u.voice=v;window.speechSynthesis.speak(u)},900);setTimeout(function(){ov.style.display='none'},3400)}
+function showConfetti(){var c=document.getElementById('confetti-container'),cl=['#FF6B6B','#4ECDC4','#FFE66D','#A78BFA','#F97316','#06D6A0','#FF69B4','#00D4FF'],h='';for(var i=0;i<35;i++){var co=cl[i%cl.length],l=Math.random()*100,d=Math.random()*0.5,s=randInt(6,12),du=1.5+Math.random(),r=Math.random()>0.5?'50%':'2px',ro=randInt(0,360);h+='<div class="confetti-piece" style="left:'+l+'%;width:'+s+'px;height:'+s+'px;background:'+co+';border-radius:'+r+';animation:confettiFall '+du+'s ease-out '+d+'s forwards;transform:rotate('+ro+'deg)"></div>'}c.innerHTML=h;setTimeout(function(){c.innerHTML=''},3000)}
+function showToast(m){var ex=document.querySelector('.toast');if(ex)ex.remove();var t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove()},3000)}
 
-    // ===================== UI =====================
-    function updateUI(){
-      document.getElementById('stat-score').textContent=state.totalCorrect+'/'+state.totalAttempted;
-      var sHTML=String(state.streak);if(state.streak>=2){var sz=Math.min(state.streak*4+16,48);sHTML+=' <span class="streak-flame" style="font-size:'+sz+'px">🔥</span>'}
-      document.getElementById('stat-streak').innerHTML=sHTML;
-      document.getElementById('stat-level').textContent=state.difficulty+'/5';
-      var rem=CORRECT_TO_LEVEL_UP-state.consecutiveCorrect;
-      document.getElementById('progress-label').textContent=state.difficulty<5?rem+' more correct to level up!':"Max level — you're a champion!";
-      var pct=(state.consecutiveCorrect/CORRECT_TO_LEVEL_UP)*100;
-      document.getElementById('progress-fill').style.width=Math.min(pct,100)+'%';
-      for(var i=0;i<CORRECT_TO_LEVEL_UP;i++){var dot=document.getElementById('dot-'+i);if(dot)dot.className='progress-dot'+(i<state.consecutiveCorrect?' filled':'')}
+// ==================== STATS SCREEN ====================
+function showStats(){showScreen('stats');var n=state.playerName||'Player';document.getElementById('stats-player-name').textContent=n+"'s Records";var p=getP(n);function lb(cont,data,suffix){var h='';GAMES.forEach(function(g){var v=data[g]||0;h+='<div class="lb-row"><div class="lb-game"><span class="lb-game-icon">'+GICONS[g]+'</span>'+GLABELS[g]+'</div>'+(v>0?'<div class="lb-value">'+v+suffix+'</div>':'<div class="lb-empty">—</div>')+'</div>'});document.getElementById(cont).innerHTML=h}lb('lb-highscore',p.hs,'%');lb('lb-timed',p.ts,'');lb('lb-streaks',p.ls,' 🔥');lb('lb-levels',p.lv,'/5');var ag='';ACHIEVEMENTS.forEach(function(a){var u=p.ach&&p.ach[a.id];ag+='<div class="achievement '+(u?'unlocked':'locked')+'"><span class="ach-icon">'+(u?a.icon:'🔒')+'</span><span class="ach-name">'+a.name+'</span><span class="ach-desc">'+a.desc+'</span></div>'});document.getElementById('achievements-grid').innerHTML=ag}
+function confirmResetStats(){if(confirm('Reset all stats for '+state.playerName+'?')){var s=getStats();delete s.players[state.playerName];saveStats(s);showStats();showToast('Stats reset!')}}
 
-      // Show/hide areas
-      var areas=['math-area','spelling-area','scramble-area','geo-area'];
-      areas.forEach(function(id){document.getElementById(id).style.display='none'});
-      var inputArea=document.getElementById('text-input-area');
-      var inp=document.getElementById('answer-input');
+// ==================== PARENT DASHBOARD ====================
+function showParentPinScreen(){showScreen('parent-pin');document.getElementById('pin-input').value='';setTimeout(function(){document.getElementById('pin-input').focus()},300)}
+function checkPin(){var pin=document.getElementById('pin-input').value;var s=getStats();if(pin===(s.pin||'1234')){showParentDashboard()}else{showToast('Wrong PIN');document.getElementById('pin-input').value=''}}
+document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin()});
+function changePin(){var np=prompt('Enter new 4-digit PIN:');if(np&&np.length===4&&/^\d+$/.test(np)){var s=getStats();s.pin=np;saveStats(s);showToast('PIN changed!')}else if(np){showToast('PIN must be 4 digits')}}
+function showParentDashboard(){showScreen('parent');var s=getStats(),names=Object.keys(s.players||{});var h='';if(!names.length){h='<div style="text-align:center;color:var(--text-muted);padding:40px">No player data yet.</div>';document.getElementById('parent-content').innerHTML=h;return}names.forEach(function(name){var p=s.players[name];h+='<div class="parent-card"><h3>'+name+'</h3>';h+='<div class="parent-row"><span>Daily Streak</span><span class="parent-val">'+(p.dailyStreak||0)+' days</span></div>';h+='<div class="parent-row"><span>Last Active</span><span class="parent-val">'+(p.lastDay||'Never')+'</span></div>';var strengths=[],weaknesses=[];GAMES.forEach(function(g){var score=p.hs[g]||0;var lev=p.lv[g]||1;h+='<div class="parent-row"><span>'+GICONS[g]+' '+GLABELS[g]+'</span><span class="parent-val">'+score+'% · Lvl '+lev+' · Streak '+((p.ls[g]||0))+'</span></div>';if(score>=80)strengths.push(GLABELS[g]);else if(score>0&&score<60)weaknesses.push(GLABELS[g])});var timedH='';GAMES.forEach(function(g){var tv=p.ts[g]||0;if(tv>0)timedH+='<div class="parent-row"><span>⏱️ '+GLABELS[g]+' Blitz</span><span class="parent-val">'+tv+' in 60s</span></div>'});h+=timedH;h+='<div style="margin-top:8px">';if(strengths.length)h+='<div style="margin:4px 0"><span style="font-size:11px;color:var(--text-muted)">Strengths:</span> '+strengths.map(function(s){return'<span class="strength-tag">'+s+'</span>'}).join(' ')+'</div>';if(weaknesses.length)h+='<div style="margin:4px 0"><span style="font-size:11px;color:var(--text-muted)">Needs work:</span> '+weaknesses.map(function(s){return'<span class="weakness-tag">'+s+'</span>'}).join(' ')+'</div>';var achCount=0;ACHIEVEMENTS.forEach(function(a){if(p.ach&&p.ach[a.id])achCount++});h+='<div class="parent-row"><span>Achievements</span><span class="parent-val">'+achCount+'/'+ACHIEVEMENTS.length+'</span></div>';h+='</div></div>'});document.getElementById('parent-content').innerHTML=h}
 
-      if(state.subject==='math'){
-        document.getElementById('math-area').style.display='block';
-        document.getElementById('problem-type').textContent='Solve this problem';
-        document.getElementById('math-expression').textContent=(state.problem?state.problem.question:'')+' = ?';
-        inp.type='number';inp.placeholder='Your answer...';inputArea.style.display='flex';
-      }else if(state.subject==='spelling'){
-        document.getElementById('spelling-area').style.display='flex';
-        document.getElementById('problem-type').textContent='Spell the word you hear';
-        inp.type='text';inp.placeholder='Type the word...';inputArea.style.display='flex';
-      }else if(state.subject==='scramble'){
-        document.getElementById('scramble-area').style.display='block';
-        document.getElementById('problem-type').textContent='Unscramble this word';
-        document.getElementById('scramble-display').textContent=state.problem?state.problem.scrambled.toUpperCase():'';
-        inp.type='text';inp.placeholder='Type the word...';inputArea.style.display='flex';
-      }else if(state.subject==='geography'){
-        document.getElementById('geo-area').style.display='block';
-        document.getElementById('problem-type').textContent='Geography challenge';
-        document.getElementById('geo-question').textContent=state.problem?state.problem.question:'';
-        inputArea.style.display='none';
-        if(state.problem){
-          var optsHTML='';
-          state.problem.options.forEach(function(opt,i){
-            optsHTML+='<button class="geo-opt" onclick="geoAnswer('+i+')">'+opt+'</button>';
-          });
-          document.getElementById('geo-options').innerHTML=optsHTML;
-        }
-      }
-
-      var subjLabels={math:'Math',spelling:'Spelling',scramble:'Scramble',geography:'Geography'};
-      document.getElementById('info-footer').textContent='Grade '+state.grade+' · '+(subjLabels[state.subject]||'')+' · Difficulty '+state.difficulty+'/5 · '+state.consecutiveCorrect+' in a row';
-    }
-
-    function showFeedback(correct,message,correctAnswer){
-      var el=document.getElementById('feedback');
-      var html='<div class="feedback-banner '+(correct?'correct':'wrong')+'"><span class="feedback-text">'+message+'</span>';
-      if(!correct&&correctAnswer)html+='<span class="correct-answer-text">The answer was: <strong>'+correctAnswer+'</strong></span>';
-      html+='</div>';el.innerHTML=html;el.style.display='block';
-    }
-
-    function showGoatLevelUp(){
-      var overlay=document.getElementById('level-up-overlay');var name=state.playerName||'You';
-      var phrases=[name+", you're the GOAT! 🐐","GOAT STATUS! "+name+" is UNSTOPPABLE!","Baaaaa! "+name+" is the GREATEST OF ALL TIME!",name+" = G.O.A.T. 🐐🐐🐐","LEVEL UP! "+name+", you're literally the GOAT!"];
-      document.getElementById('level-up-msg').innerHTML='<span class="level-up-goat" style="animation:goatBounce 0.6s ease 3">🐐</span>'+pickRandom(phrases);
-      overlay.style.display='flex';
-      setTimeout(function(){playGoatSound()},300);
-      if('speechSynthesis' in window){setTimeout(function(){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(name+'! You are the goat! Level up!');u.rate=0.85;u.pitch=1.2;u.volume=1.0;var v=findVoice(state.voiceChoice||'us-woman');if(v)u.voice=v;window.speechSynthesis.speak(u)},900)}
-      setTimeout(function(){overlay.style.display='none'},3400);
-    }
-
-    function showConfetti(){
-      var c=document.getElementById('confetti-container');var colors=['#FF6B6B','#4ECDC4','#FFE66D','#A78BFA','#F97316','#06D6A0','#FF69B4','#00D4FF'];var h='';
-      for(var i=0;i<40;i++){var cl=colors[i%colors.length];var l=Math.random()*100;var d=Math.random()*0.5;var s=randInt(6,14);var du=1.5+Math.random();var r=Math.random()>0.5?'50%':'2px';var ro=randInt(0,360);
-      h+='<div class="confetti-piece" style="left:'+l+'%;width:'+s+'px;height:'+s+'px;background:'+cl+';border-radius:'+r+';animation:confettiFall '+du+'s ease-out '+d+'s forwards;transform:rotate('+ro+'deg)"></div>'}
-      c.innerHTML=h;setTimeout(function(){c.innerHTML=''},3000);
-    }
-
-    document.getElementById('answer-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkAnswer()});
-    setTimeout(function(){document.getElementById('name-input').focus()},300);
-
-    if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+// ==================== INIT ====================
+document.getElementById('name-input').addEventListener('keydown',function(e){if(e.key==='Enter')submitName()});
+document.getElementById('answer-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkAnswer()});
+renderProfiles();
+setTimeout(function(){document.getElementById('name-input').focus()},300);
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
 </script>
 </body>
 </html>
